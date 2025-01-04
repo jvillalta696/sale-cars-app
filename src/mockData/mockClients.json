@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "cardName": "Juan Perez",
+    "cardType": "Gold",
+    "groupCode": "A1",
+    "address": "123 Main St",
+    "phone1": "1234567890",
+    "phone2": "0987654321",
+    "fax": "1231231234",
+    "cntctPrsn": [
+      { "name": "Maria Lopez", "phone": "1111111111" }
+    ],
+    "glblLocNum": "GLN12345",
+    "licTradNum": "LTN12345",
+    "currency": "USD",
+    "email": "juan.perez@example.com"
+  },
+  {
+    "id": 2,
+    "cardName": "Ana Gomez",
+    "cardType": "Silver",
+    "groupCode": "B2",
+    "address": "456 Elm St",
+    "phone1": "2345678901",
+    "phone2": "1098765432",
+    "fax": "2342342345",
+    "cntctPrsn": [],
+    "glblLocNum": "GLN23456",
+    "licTradNum": "LTN23456",
+    "currency": "CRC",
+    "email": "ana.gomez@example.com"
+  },
+  {
+    "id": 3,
+    "cardName": "Luis Martinez",
+    "cardType": "Platinum",
+    "groupCode": "C3",
+    "address": "789 Oak St",
+    "phone1": "3456789012",
+    "phone2": "2109876543",
+    "fax": "3453453456",
+    "cntctPrsn": [
+      { "name": "Laura Sanchez", "phone": "2222222222" }
+    ],
+    "glblLocNum": "GLN34567",
+    "licTradNum": "LTN34567",
+    "currency": "MULTI",
+    "email": "luis.martinez@example.com"
+  },
+  {
+    "id": 4,
+    "cardName": "Carlos Fernandez",
+    "cardType": "Gold",
+    "groupCode": "D4",
+    "address": "101 Pine St",
+    "phone1": "4567890123",
+    "phone2": "3210987654",
+    "fax": "4564564567",
+    "cntctPrsn": [
+      { "name": "Sofia Torres", "phone": "3333333333" },
+      { "name": "Pedro Garcia", "phone": "4444444444" }
+    ],
+    "glblLocNum": "GLN45678",
+    "licTradNum": "LTN45678",
+    "currency": "USD",
+    "email": "carlos.fernandez@example.com"
+  },
+  {
+    "id": 5,
+    "cardName": "Maria Rodriguez",
+    "cardType": "Silver",
+    "groupCode": "E5",
+    "address": "202 Maple St",
+    "phone1": "5678901234",
+    "phone2": "4321098765",
+    "fax": "5675675678",
+    "cntctPrsn": [
+      { "name": "Miguel Diaz", "phone": "5555555555" }
+    ],
+    "glblLocNum": "GLN56789",
+    "licTradNum": "LTN56789",
+    "currency": "CRC",
+    "email": "maria.rodriguez@example.com"
+  },
+  {
+    "id": 6,
+    "cardName": "Jose Hernandez",
+    "cardType": "Platinum",
+    "groupCode": "F6",
+    "address": "303 Birch St",
+    "phone1": "6789012345",
+    "phone2": "5432109876",
+    "fax": "6786786789",
+    "cntctPrsn": [],
+    "glblLocNum": "GLN67890",
+    "licTradNum": "LTN67890",
+    "currency": "MULTI",
+    "email": "jose.hernandez@example.com"
+  },
+  {
+    "id": 7,
+    "cardName": "Laura Lopez",
+    "cardType": "Gold",
+    "groupCode": "G7",
+    "address": "404 Cedar St",
+    "phone1": "7890123456",
+    "phone2": "6543210987",
+    "fax": "7897897890",
+    "cntctPrsn": [
+      { "name": "Pedro Garcia", "phone": "6666666666" }
+    ],
+    "glblLocNum": "GLN78901",
+    "licTradNum": "LTN78901",
+    "currency": "USD",
+    "email": "laura.lopez@example.com"
+  },
+  {
+    "id": 8,
+    "cardName": "Miguel Ramirez",
+    "cardType": "Silver",
+    "groupCode": "H8",
+    "address": "505 Walnut St",
+    "phone1": "8901234567",
+    "phone2": "7654321098",
+    "fax": "8908908901",
+    "cntctPrsn": [
+      { "name": "Lucia Martinez", "phone": "7777777777" },
+      { "name": "Carlos Ruiz", "phone": "8888888888" }
+    ],
+    "glblLocNum": "GLN89012",
+    "licTradNum": "LTN89012",
+    "currency": "CRC",
+    "email": "miguel.ramirez@example.com"
+  },
+  {
+    "id": 9,
+    "cardName": "Sofia Gonzalez",
+    "cardType": "Platinum",
+    "groupCode": "I9",
+    "address": "606 Chestnut St",
+    "phone1": "9012345678",
+    "phone2": "8765432109",
+    "fax": "9019019012",
+    "cntctPrsn": [
+      { "name": "Juan Torres", "phone": "9999999999" }
+    ],
+    "glblLocNum": "GLN90123",
+    "licTradNum": "LTN90123",
+    "currency": "MULTI",
+    "email": "sofia.gonzalez@example.com"
+  },
+  {
+    "id": 10,
+    "cardName": "Pedro Sanchez",
+    "cardType": "Gold",
+    "groupCode": "J10",
+    "address": "707 Spruce St",
+    "phone1": "0123456789",
+    "phone2": "9876543210",
+    "fax": "0120120123",
+    "cntctPrsn": [
+      { "name": "Carlos Perez", "phone": "0000000000" }
+    ],
+    "glblLocNum": "GLN01234",
+    "licTradNum": "LTN01234",
+    "currency": "USD",
+    "email": "pedro.sanchez@example.com"
+  }
+]
