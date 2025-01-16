@@ -1,70 +1,88 @@
-// AuthContext.jsx
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserSessionPersistence,
+  getAuth,
+} from 'firebase/auth';
+import { app } from '../firebase/firebase.js';
+import { getById, getReference } from '../services/firestore.service';
 
-// Firebase configuration (replace with your own config)
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+const authContext = createContext();
+const auth = getAuth(app);
+export const useAuth = () => {
+  const context = useContext(authContext);
+  return context;
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Create context
-const AuthContext = createContext();
-
-// Provider component
-const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [config, setConfig] = useState(null);
+  const [apiConfig, setApiConfig] = useState(null);
+  const [currentCompany, setCurrentCompany] = useState(null);
+
+  const signIn = async (email, psw) => {
+    await setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, email, psw);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+  const signout = () => signOut(auth);
+
+  const getConfig = async () => {
+    if (user) {
+      const usrConf = await getById('usuarios', user.uid);
+      const configData = usrConf.data().config;
+      setConfig(usrConf.data());
+      if (configData) {
+        const configDoc = await getReference(configData);
+        if (configDoc.exists()) {
+          const connectConfig = configDoc.data();
+          setApiConfig(connectConfig);
+        }
+      }
+      setCurrentCompany(usrConf.data().companyList[0]);
+    }
+  };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscirbe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-
-    return () => unsubscribe();
+    return () => {
+      unsubscirbe();
+    };
   }, []);
 
-  const signIn = async (email, password) => {
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.error("Error signing in:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signOutUser = async () => {
-    setLoading(true);
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Error signing out:", error);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    getConfig();
+  }, [user]);
+  AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOutUser }}>
+    <authContext.Provider
+      value={{
+        signIn,
+        signout,
+        user,
+        loading,
+        config,
+        currentCompany,
+        apiConfig,
+        setCurrentCompany,
+      }}
+    >
       {children}
-    </AuthContext.Provider>
+    </authContext.Provider>
   );
 };
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export { AuthContext, AuthProvider };

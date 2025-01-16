@@ -1,5 +1,7 @@
+import React from 'react';
 import './App.css';
-import { MockAuthProvider } from './context/MockAuthContext';
+import { AuthProvider } from './context/AuthContext';
+import { ClientProvider } from './context/ClientContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Page404NotFound from './pages/Page404NotFound';
@@ -9,15 +11,22 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <Router>
-      <MockAuthProvider>        
+      <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedRoute />}>
-            <Route path="/" element={<Dashboard />} />
-          </Route>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <ClientProvider>
+                  <Dashboard />
+                </ClientProvider>
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Page404NotFound />} />
         </Routes>
-      </MockAuthProvider>
+      </AuthProvider>
     </Router>
   );
 }
