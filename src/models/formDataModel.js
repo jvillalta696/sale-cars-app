@@ -1,17 +1,18 @@
-
 const formDataModel = {
-  cardName: '',
-  cardType: '',
-  groupCode: '',
-  address: '',
-  phone1: '',
-  phone2: '',
-  fax: '',
-  cntctPrsn: [{ name: '', phone: '' }],
-  glblLocNum: '',
-  licTradNum: '',
-  currency: 'USD',
-  email: '',
+  CardName: '',
+  CardCode: '',
+  GroupCode: '',
+  Address: '',
+  Phone1: '',
+  Phone2: '',
+  Fax: '',
+  GlblLocNum: '',
+  LictradNum: '',
+  Currency: 'USD',
+  Email: '',
+  Contacto: [
+    { InternalCode: null, Name: '', MobilePhone: '', Phone1: '', Phone2: '' },
+  ],
 };
 
 export default formDataModel;
