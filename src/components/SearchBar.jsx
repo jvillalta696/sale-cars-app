@@ -5,7 +5,7 @@ import { useClient } from '../context/ClientContext';
 import { useAuth } from '../context/AuthContext';
 import { getClientByCode } from '../services/client.service';
 
-const SearchBar = ({ onSelectClient }) => {
+const SearchBar = ({ onSelectClient, onIsFound }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClients, setFilteredClients] = useState([]);
   const { clients, loading } = useClient();
@@ -40,10 +40,12 @@ const SearchBar = ({ onSelectClient }) => {
       onSelectClient(clnt.SocioNegocio);
       setSearchTerm('');
       setFilteredClients([]);
+      onIsFound(true);
       M.toast({
         html: `Cliente ${client.CardName} seleccionado`,
         classes: 'green',
       });
+      console.log(clnt.SocioNegocio);
     } catch (error) {
       console.error(error.message);
     }

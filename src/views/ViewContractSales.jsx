@@ -1,3 +1,4 @@
+import React from 'react';
 const ViewContractSales = () => {
   return (
     <div className="container">

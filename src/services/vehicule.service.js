@@ -22,7 +22,7 @@ export const getVehiculeByVIN = async (config, db, data) => {
   try {
     const token = await getToken(config);
     const response = await axios.get(
-      `${config.URI}/Vehiculo/buscarvehículo?CodeBD=${db}&VIN=${data}`,
+      `${config.URI}/Vehiculo/buscarvehiculo?CodeBD=${db}&VIN=${data}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

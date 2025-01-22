@@ -33,7 +33,8 @@ const ViewVehicleMasterData = () => {
         VIN
       );
       setSelectedVehicles([]);
-      setSelectedVehicle(vehicleData);
+      console.log(vehicleData.Vehiculo);
+      setSelectedVehicle(vehicleData.Vehiculo);
     } catch (error) {
       console.error(error.message);
     }
@@ -88,7 +89,7 @@ const ViewVehicleMasterData = () => {
                     onClick={() => handleSelectVehicle(vehicle.VIN)}
                   >
                     {vehicle.VIN} - {vehicle.Marca} {vehicle.Estilo}{' '}
-                    {vehicle.Año}
+                    {vehicle.ColorVehiculo} {vehicle.Año}
                   </a>
                 ))}
               </div>

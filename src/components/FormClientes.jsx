@@ -4,6 +4,9 @@ import SearchBar from './SearchBar';
 import React, { useEffect } from 'react';
 import M from 'materialize-css';
 import formDataModel from '../models/formDataModel';
+import { getGroupList, getPerson } from '../services/client.service';
+import { useAuth } from '../context/AuthContext';
+import LoadingIcon from './LoadingIcon';
 
 const FormClientes = ({
   formData,
@@ -12,15 +15,34 @@ const FormClientes = ({
   handleContactPersonChange,
   handleSubmit,
   setFormData,
+  handleEditContactPerson,
 }) => {
+  const [groupList, setGroupList] = React.useState([]);
+  const [isfound, setIsFound] = React.useState(false);
+  const [personLoading, setPersonLoading] = React.useState(false);
+  const { currentCompany, apiConfig } = useAuth();
+
   useEffect(() => {
     M.updateTextFields();
   }, [formData]);
 
-  const isUpdating = formData.CardCode !== undefined;
+  useEffect(() => {
+    const fetchGroupList = async () => {
+      try {
+        const groups = await getGroupList(apiConfig, currentCompany.code);
+        setGroupList(groups);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchGroupList();
+  }, [currentCompany, apiConfig]);
+
+  const isUpdating = formData.CardCode !== '';
 
   const handleResetForm = () => {
     setFormData({ ...formDataModel });
+    setIsFound(false);
   };
 
   const handleDeleteContactPerson = (index) => {
@@ -28,11 +50,45 @@ const FormClientes = ({
     setFormData({ ...formData, Contacto: newCntctPrsn });
   };
 
+  const handleSearchPerson = async () => {
+    try {
+      setPersonLoading(true);
+      const person = await getPerson(apiConfig, formData.LictradNum);
+      if (!person.MsgError) {
+        setFormData({
+          ...formData,
+          CardName: person.Nombre,
+          TypeID: person.Tipo,
+        });
+        console.log(person);
+        setIsFound(true);
+        M.toast({
+          html: `Persona ${person.Nombre} encontrado!`,
+          classes: 'green',
+        });
+      } else {
+        setIsFound(false);
+        M.toast({
+          html: `Error: ${person.MsgError}`,
+          classes: 'red',
+        });
+      }
+    } catch (error) {
+      M.toast({
+        html: `Error: ${error.message}`,
+        classes: 'red',
+      });
+      console.error(error.message);
+    } finally {
+      setPersonLoading(false);
+    }
+  };
+
   return (
     <div className="container">
       <div className="white z-depth-3" style={{ padding: 10, marginTop: 10 }}>
         <h2>Formulario de Clientes</h2>
-        <SearchBar onSelectClient={setFormData} />
+        <SearchBar onSelectClient={setFormData} onIsFound={setIsFound} />
         {formData.CardCode && (
           <button type="button" onClick={handleResetForm} className="btn">
             Crear Nuevo Cliente
@@ -40,35 +96,81 @@ const FormClientes = ({
         )}
         <form onSubmit={handleSubmit}>
           <div className="row">
-            <div className="col s12 m6 l4 input-field">
+            <div className="col s12 m12 l2 input-field">
+              {personLoading ? (
+                <LoadingIcon />
+              ) : (
+                <i
+                  className="material-icons prefix"
+                  style={{ cursor: 'pointer' }}
+                  hidden={isfound}
+                  onClick={handleSearchPerson}
+                >
+                  add_circle
+                </i>
+              )}
+              <input
+                type="text"
+                name="LictradNum"
+                value={formData.LictradNum}
+                disabled={isfound}
+                onChange={handleChange}
+                required
+              />
+              <label htmlFor="LictradNum">Identifición</label>
+              {isfound && formData.CardCode === '' && (
+                <button
+                  type="button"
+                  onClick={handleResetForm}
+                  className="btn"
+                  style={{ marginTop: '10px' }}
+                >
+                  Buscar de nuevo
+                </button>
+              )}
+            </div>
+            <div className="col s12 m12 l4 input-field">
               <input
                 type="text"
                 name="CardName"
                 value={formData.CardName}
+                disabled
                 onChange={handleChange}
                 required
               />
               <label htmlFor="CardName">Nombre del Socio de negocio</label>
             </div>
-            <div className="col s12 m6 l4 input-field">
+            <div className="col s12 m12 l2 input-field">
               <input
                 type="text"
-                name="CardCode"
-                value={formData.CardCode}
+                name="TypeID"
+                value={formData.TypeID === 'J' ? 'Jurídica' : 'Física'}
                 onChange={handleChange}
+                disabled
                 required
               />
-              <label htmlFor="CardCode">Código del Socio</label>
+              <label htmlFor="CardName">Tipo de Identifición</label>
             </div>
             <div className="col s12 m12 l4 input-field">
-              <input
-                type="text"
+              <select
                 name="GroupCode"
                 value={formData.GroupCode}
                 onChange={handleChange}
+                className="browser-default"
                 required
-              />
-              <label htmlFor="GroupCode">Grupo</label>
+              >
+                <option value="" disabled>
+                  Seleccione un grupo
+                </option>
+                {groupList.map((group) => (
+                  <option key={group.Code} value={group.Code}>
+                    {group.Name}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="GroupCode" className="active">
+                Grupo
+              </label>
             </div>
           </div>
           <div className="row">
@@ -117,62 +219,45 @@ const FormClientes = ({
           <div className="row">
             <div className="col s12 input-field">
               <button
-                type="button"
                 onClick={handleAddContactPerson}
-                className="btn"
+                className="btn modal-trigger"
+                data-target="contact-modal"
               >
                 Añadir Persona de Contacto
               </button>
               <ul className="collection">
-                {formData.Contacto.map((person, index) => (
-                  <li className="collection-item" key={index}>
-                    <div className="row">
-                      <div className="col s12 m5 l5 input-field">
-                        <input
-                          type="text"
-                          value={person.Name}
-                          onChange={(e) =>
-                            handleContactPersonChange(
-                              index,
-                              'Name',
-                              e.target.value
-                            )
-                          }
-                          required
-                        />
-                        <label htmlFor={`Contacto-Name-${index}`}>
-                          Nombre de Persona de Contacto {index + 1}
-                        </label>
+                {formData.Contacto.length > 0 &&
+                  formData.Contacto.map((person, index) => (
+                    <li className="collection-item" key={index}>
+                      <div className="row">
+                        <div className="col s12 m10 l10">
+                          <span>
+                            {person.FirstName} {person.LastName} -{' '}
+                            {person.E_Mail}
+                          </span>
+                        </div>
+                        <div className="col s12 m1 l1">
+                          <button
+                            type="button"
+                            onClick={() => handleEditContactPerson(index)}
+                            className="btn-floating blue modal-trigger"
+                            data-target="contact-modal"
+                          >
+                            <i className="large material-icons">edit</i>
+                          </button>
+                        </div>
+                        <div className="col s12 m1 l1">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteContactPerson(index)}
+                            className="btn-floating red"
+                          >
+                            <i className="large material-icons">delete</i>
+                          </button>
+                        </div>
                       </div>
-                      <div className="col s12 m5 l5 input-field">
-                        <input
-                          type="text"
-                          value={person.MobilePhone}
-                          onChange={(e) =>
-                            handleContactPersonChange(
-                              index,
-                              'MobilePhone',
-                              e.target.value
-                            )
-                          }
-                          required
-                        />
-                        <label htmlFor={`Contacto-MobilePhone-${index}`}>
-                          Teléfono Móvil de Persona de Contacto {index + 1}
-                        </label>
-                      </div>
-                      <div className="col s12 m2 l1 offset-l1 input-field">
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteContactPerson(index)}
-                          className="btn-floating red"
-                        >
-                          <i className="large material-icons">delete</i>
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
@@ -187,16 +272,6 @@ const FormClientes = ({
               />
               <label htmlFor="GlblLocNum">Profesión</label>
             </div>
-            <div className="col s12 m6 l4 input-field">
-              <input
-                type="text"
-                name="LictradNum"
-                value={formData.LictradNum}
-                onChange={handleChange}
-                required
-              />
-              <label htmlFor="LictradNum">Cédula Jurídica/Fisica</label>
-            </div>
             <div className="col s12 m12 l4 input-field">
               <select
                 name="Currency"
@@ -206,7 +281,7 @@ const FormClientes = ({
               >
                 <option value="USD">USD</option>
                 <option value="CRC">CRC</option>
-                <option value="MULTI">Multi-moneda</option>
+                <option value="##">Multi-moneda</option>
               </select>
               <label htmlFor="Currency" className="active">
                 Moneda
@@ -242,7 +317,7 @@ FormClientes.propTypes = {
   formData: PropTypes.shape({
     CardCode: PropTypes.string,
     CardName: PropTypes.string.isRequired,
-    GroupCode: PropTypes.string.isRequired,
+    GroupCode: PropTypes.any.isRequired,
     Address: PropTypes.string.isRequired,
     Phone1: PropTypes.string.isRequired,
     Phone2: PropTypes.string,
@@ -266,6 +341,7 @@ FormClientes.propTypes = {
   handleContactPersonChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setFormData: PropTypes.func.isRequired,
+  handleEditContactPerson: PropTypes.func.isRequired,
 };
 
 export default FormClientes;

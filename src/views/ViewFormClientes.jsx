@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import FormClientes from '../components/FormClientes';
-import mockClients from '../mockData/mockClients.json';
 import M from 'materialize-css';
 import formDataModel from '../models/formDataModel';
+import { createClient, updateClient } from '../services/client.service';
+import { useAuth } from '../context/AuthContext';
+import ContactModal from '../components/ContactModal';
+import { useClient } from '../context/ClientContext';
 
 const ViewFormClientes = () => {
   const [formData, setFormData] = useState({ ...formDataModel });
+  const { apiConfig, currentCompany } = useAuth();
+  const { fetchClients } = useClient();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [titleType, setTitleType] = useState('Crear');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,63 +22,102 @@ const ViewFormClientes = () => {
   };
 
   const handleAddContactPerson = () => {
-    setFormData({
-      ...formData,
-      Contacto: [
-        ...formData.Contacto,
-        {
-          InternalCode: null,
-          Name: '',
-          MobilePhone: '',
-          Phone1: '',
-          Phone2: '',
-        },
-      ],
+    setTitleType('Crear');
+    setSelectedContact({
+      InternalCode: null,
+      Name: '',
+      MobilePhone: '',
+      Phone1: '',
+      Phone2: '',
+      E_Mail: '',
+      FirstName: '',
+      LastName: '',
+      index: formData.Contacto.length,
     });
+    setIsModalOpen(true);
   };
 
   const handleContactPersonChange = (index, field, value) => {
+    setTitleType('Editar');
     const newContacto = [...formData.Contacto];
     newContacto[index][field] = value;
     setFormData({ ...formData, Contacto: newContacto });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.id) {
-      // Update existing client
-      const index = mockClients.findIndex(
-        (client) => client.id === formData.id
-      );
-      if (index !== -1) {
-        mockClients[index] = formData;
-        M.toast({
-          html: `Cliente ${formData.cardName} Actualizado con exito`,
-          classes: 'green',
-        });
-      }
+  const handleEditContactPerson = (index) => {
+    setTitleType('Editar');
+    setSelectedContact({ ...formData.Contacto[index], index });
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateContactPerson = (updatedContact) => {
+    const newContacto = [...formData.Contacto];
+    if (updatedContact.index >= newContacto.length) {
+      newContacto.push(updatedContact);
     } else {
-      // Create new client
-      const newClient = { ...formData, id: mockClients.length + 1 };
-      mockClients.push(newClient);
+      newContacto[updatedContact.index] = updatedContact;
+    }
+    setFormData({ ...formData, Contacto: newContacto });
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.CardCode !== '' && formData.CardCode !== undefined) {
+      // Update existing client
+      const res = await updateClient(apiConfig, currentCompany.code, formData);
+      console.log(formData);
       M.toast({
-        html: `Cliente ${formData.cardName} Creado con exito`,
+        html: `Cliente ${formData.CardName} Actualizado con exito`,
         classes: 'green',
       });
-      setFormData({ ...formDataModel });
+    } else {
+      // Create new client
+      const newClient = { ...formData };
+      try {
+        const res = await createClient(
+          apiConfig,
+          currentCompany.code,
+          newClient
+        );
+        console.log(res);
+        if (res.Estado === 'Err') throw new Error(res.MsgError);
+        fetchClients();
+        M.toast({
+          html: `Cliente ${formData.CardName} Creado con exito`,
+          classes: 'green',
+        });
+        setFormData({ ...formDataModel });
+      } catch (error) {
+        M.toast({
+          html: `Error al crear el cliente ${formData.CardName}`,
+          classes: 'red',
+        });
+        console.log(error.message);
+      }
     }
-    console.log(mockClients);
   };
 
   return (
-    <FormClientes
-      formData={formData}
-      handleChange={handleChange}
-      handleAddContactPerson={handleAddContactPerson}
-      handleContactPersonChange={handleContactPersonChange}
-      handleSubmit={handleSubmit}
-      setFormData={setFormData}
-    />
+    <>
+      <FormClientes
+        formData={formData}
+        handleChange={handleChange}
+        handleAddContactPerson={handleAddContactPerson}
+        handleContactPersonChange={handleContactPersonChange}
+        handleEditContactPerson={handleEditContactPerson}
+        handleSubmit={handleSubmit}
+        setFormData={setFormData}
+      />
+      {isModalOpen && (
+        <ContactModal
+          titleType={titleType}
+          contact={selectedContact}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleUpdateContactPerson}
+        />
+      )}
+    </>
   );
 };
 

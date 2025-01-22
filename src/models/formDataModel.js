@@ -1,3 +1,5 @@
+import contactModel from './contactModel';
+
 const formDataModel = {
   CardName: '',
   CardCode: '',
@@ -10,9 +12,7 @@ const formDataModel = {
   LictradNum: '',
   Currency: 'USD',
   Email: '',
-  Contacto: [
-    { InternalCode: null, Name: '', MobilePhone: '', Phone1: '', Phone2: '' },
-  ],
+  Contacto: [],
 };
 
 export default formDataModel;
