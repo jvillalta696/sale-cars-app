@@ -37,13 +37,6 @@ const ViewFormClientes = () => {
     setIsModalOpen(true);
   };
 
-  const handleContactPersonChange = (index, field, value) => {
-    setTitleType('Editar');
-    const newContacto = [...formData.Contacto];
-    newContacto[index][field] = value;
-    setFormData({ ...formData, Contacto: newContacto });
-  };
-
   const handleEditContactPerson = (index) => {
     setTitleType('Editar');
     setSelectedContact({ ...formData.Contacto[index], index });
@@ -53,12 +46,14 @@ const ViewFormClientes = () => {
   const handleUpdateContactPerson = (updatedContact) => {
     const newContacto = [...formData.Contacto];
     if (updatedContact.index >= newContacto.length) {
+      updatedContact.Name = updatedContact.FirstName;
       newContacto.push(updatedContact);
     } else {
       newContacto[updatedContact.index] = updatedContact;
     }
     setFormData({ ...formData, Contacto: newContacto });
     setIsModalOpen(false);
+    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -104,7 +99,6 @@ const ViewFormClientes = () => {
         formData={formData}
         handleChange={handleChange}
         handleAddContactPerson={handleAddContactPerson}
-        handleContactPersonChange={handleContactPersonChange}
         handleEditContactPerson={handleEditContactPerson}
         handleSubmit={handleSubmit}
         setFormData={setFormData}

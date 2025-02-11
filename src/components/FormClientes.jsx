@@ -12,7 +12,6 @@ const FormClientes = ({
   formData,
   handleChange,
   handleAddContactPerson,
-  handleContactPersonChange,
   handleSubmit,
   setFormData,
   handleEditContactPerson,
@@ -280,7 +279,7 @@ const FormClientes = ({
                 className="browser-default"
               >
                 <option value="USD">USD</option>
-                <option value="CRC">CRC</option>
+                <option value="COL">CRC</option>
                 <option value="##">Multi-moneda</option>
               </select>
               <label htmlFor="Currency" className="active">
@@ -338,7 +337,6 @@ FormClientes.propTypes = {
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleAddContactPerson: PropTypes.func.isRequired,
-  handleContactPersonChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setFormData: PropTypes.func.isRequired,
   handleEditContactPerson: PropTypes.func.isRequired,
