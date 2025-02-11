@@ -71,23 +71,6 @@ const Login = () => {
                   />
                   <label htmlFor="password">Password</label>
                 </div>
-                <div className="input-field">
-                  <select
-                    id="company"
-                    value={selectedCompany}
-                    onChange={handleCompanyChange}
-                  >
-                    <option value="" disabled>
-                      Choose your company
-                    </option>
-                    {companies.map((company, index) => (
-                      <option key={index} value={company}>
-                        {company}
-                      </option>
-                    ))}
-                  </select>
-                  <label htmlFor="company">Company</label>
-                </div>
               </div>
               <div className="card-action">
                 <div className="row">
