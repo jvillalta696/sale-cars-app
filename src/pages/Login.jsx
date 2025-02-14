@@ -5,10 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [companies, setCompanies] = useState([]);
   const { signIn } = useAuth();
   const [usr, setUsr] = useState({ email: '', password: '' });
-  const [selectedCompany, setSelectedCompany] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -30,15 +28,9 @@ const Login = () => {
     console.log(usr);
   };
 
-  const handleCompanyChange = (e) => {
-    setSelectedCompany(e.target.value);
-  };
-
   useEffect(() => {
     // Initialize Materialize CSS select
     M.AutoInit();
-    // Fetch companies data (mocked for now)
-    setCompanies(['Company A', 'Company B', 'Company C']);
   }, []);
 
   return (
