@@ -1,0 +1,16 @@
+.tabs .tab a {
+  color: #42a097; /* Cambia al color de texto deseado */
+  transition: background-color 0.9s ease, color 0.9s ease; /* Agrega la transición */
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  background-color: #0faa9b; /* Cambia al color de fondo deseado */
+  color: #ffffff; /* Cambia al color de texto activo deseado */
+}
+
+.tabs .tab.active a {
+  background-color: #0faa9bbe; /* Cambia al color de fondo deseado */
+  transition: background-color 0.9s ease, color 0.9s ease; /* Agrega la transición */
+  color: #ffffff; /* Cambia al color de texto deseado */
+}
+

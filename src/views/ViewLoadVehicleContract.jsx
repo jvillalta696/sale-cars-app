@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import React from 'react';
-import InformacionGeneralForm from '../components/InformacionGeneralForm';
-import DatosVehiculoForm from '../components/DatosVehiculoForm';
-import DatosVentaForm from '../components/DatosVentaForm';
-import DatosVehiculoUsadoForm from '../components/DatosVehiculoUsadoForm';
-import FinanciamientoForm from '../components/FinanciamientoForm';
-import PaquetesMantenimientoForm from '../components/PaquetesMantenimientoForm';
-import ResumenForm from '../components/ResumenForm';
+import './tabs.css'
+import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm.jsx';
+import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm.jsx';
+import DatosVentaForm from '../components/TabsContracts/DatosVentaForm.jsx';
+import DatosVehiculoUsadoForm from '../components/TabsContracts/DatosVehiculoUsadoForm.jsx';
+import FinanciamientoForm from '../components/TabsContracts/FinanciamientoForm.jsx';
+import PaquetesMantenimientoForm from '../components/TabsContracts/PaquetesMantenimientoForm.jsx';
+import ResumenForm from '../components/TabsContracts/ResumenForm.jsx';
 
 const ViewLoadVehicleContract = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -109,7 +110,37 @@ const ViewLoadVehicleContract = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
+      <div className="row">
+        <div className="col s12">
+          <h4 className="center">Contratos</h4>
+        </div>
+      </div>      
+      <div className="row">
+        <div className="col s12 m2 input-field" hidden={!formData.numeroContrato}>
+          <input
+            type="text"
+            id="numeroContrato"
+            name="numeroContrato"
+            disabled
+            value={formData.numeroContrato}
+          />
+          <label htmlFor="numeroContrato">Número de Contrato</label>
+        </div>
+        <div className={`col s12 ${!formData.numeroContrato?'m6 offset-m3':'m6 offset-m1'}`}>
+          <nav>
+            <div className="nav-wrapper teal">
+              <form>
+                <div className="input-field">
+                  <input id="search" type="search" required placeholder='Buscas Contrato por Numero o Nombre de Cliente' />
+                  <label className="label-icon" for="search"><i class="material-icons">search</i></label>
+                  <i className="material-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
       <ul className="tabs">
         {tabs.map((tab, index) => (
           <li
@@ -123,7 +154,12 @@ const ViewLoadVehicleContract = () => {
       </ul>
 
       <div className="section">
-        <h5>{tabs[activeTab]}</h5>
+        <div className="row">
+          <div className="col s12">
+            <h5 className='center'>{tabs[activeTab]}</h5>
+          </div>
+        </div>
+        
         {activeTab === 0 && (
           <InformacionGeneralForm
             formData={formData}
@@ -153,7 +189,9 @@ const ViewLoadVehicleContract = () => {
         )}
         {activeTab === 6 && <ResumenForm formData={formData} />}
       </div>
-      <div className="row">
+      <div class="divider"></div>
+      <div className="section">
+     
         <button
           className="btn"
           disabled={activeTab === 0}
