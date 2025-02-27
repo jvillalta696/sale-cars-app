@@ -47,9 +47,13 @@ const SearchBar = ({ onSelectClient, onIsFound }) => {
       });
       console.log(clnt.SocioNegocio);
     } catch (error) {
-      console.error(error.message);
+      M.toast({
+        html: `Error: ${error.message || error}`,
+        classes: 'red',
+      });
     }
   };
+
   useEffect(() => {
     if (loading) {
       setFilteredClients([]);

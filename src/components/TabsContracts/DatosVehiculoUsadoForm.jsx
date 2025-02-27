@@ -18,38 +18,8 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
   }, [formData]);
 
   return (
-    <div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="unidad"
-          value={formData.datosVehiculoUsado.unidad}
-          onChange={handleChange}
-          required
-        />
-        <label>Unidad (Código del Ítem)</label>
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="marca"
-          value={formData.datosVehiculoUsado.marca}
-          onChange={handleChange}
-          required
-        />
-        <label>Marca</label>
-      </div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="modelo"
-          value={formData.datosVehiculoUsado.modelo}
-          onChange={handleChange}
-          required
-        />
-        <label>Modelo</label>
-      </div>
-    </div>
+    <>
+    </>
   );
 };
 

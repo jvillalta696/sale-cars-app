@@ -173,7 +173,7 @@ const ViewLoadVehicleContract = () => {
           <DatosVentaForm formData={formData} setFormData={setFormData} />
         )}
         {activeTab === 3 && (
-          <DatosVehiculoUsadoForm
+          <DatosVehiculoForm
             formData={formData}
             setFormData={setFormData}
           />

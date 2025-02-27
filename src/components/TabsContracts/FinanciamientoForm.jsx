@@ -14,32 +14,36 @@ const FinanciamientoForm = ({ formData, setFormData }) => {
   };
 
   useEffect(() => {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
     M.updateTextFields();
   }, [formData]);
 
   return (
-    <div>
-      <div className="input-field">
-        <input
-          type="text"
-          name="entidad"
-          value={formData.financiamiento.entidad}
-          onChange={handleChange}
-          required
-        />
-        <label>Entidad Financiera</label>
+    <>
+      <div className="card" style={{ padding: 20, margin: 20 }}>
+        <span className="card-title">
+          Financiamiento
+        </span>
+        <div className="card-contend">
+          <div className="row">
+            <div className="col s12 m6 input-field">
+               <i className='material-icons prefix'>store</i>
+              <select name="U_EntFin" id="U_EntFin">
+                <option value="" disabled selected>Seleccione un Ente financiero</option>
+              </select>   
+              <label htmlFor="U_EntFin">Ente Financiero</label>           
+            </div>
+            
+            <div className="col s12 m6 input-field">
+              <i className='material-icons prefix'>monetization_on</i>
+              <input type="number" name="U_Financia-" id="U_Financia-" onChange={handleChange} />
+              <label htmlFor="U_Financia-">Monto a financiar</label>
+            </div>
+          </div>                    
+        </div>
       </div>
-      <div className="input-field">
-        <input
-          type="number"
-          name="monto"
-          value={formData.financiamiento.monto}
-          onChange={handleChange}
-          required
-        />
-        <label>Monto</label>
-      </div>
-    </div>
+    </>
   );
 };
 
