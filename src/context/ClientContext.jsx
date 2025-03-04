@@ -28,8 +28,7 @@ export const ClientProvider = ({ children }) => {
       } catch (error) {
         console.error('Error fetching client list:', error);
       } finally {
-        setLoading(false);
-        console.log(clients);
+        setLoading(false);       
       }
     }
   };

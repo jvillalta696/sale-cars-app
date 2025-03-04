@@ -32,8 +32,7 @@ const ViewVehicleMasterData = () => {
         currentCompany.code,
         VIN
       );
-      setSelectedVehicles([]);
-      console.log(vehicleData.Vehiculo);
+      setSelectedVehicles([]);      
       setSelectedVehicle(vehicleData.Vehiculo);
     } catch (error) {
       console.error(error.message);

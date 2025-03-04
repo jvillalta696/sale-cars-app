@@ -1,0 +1,376 @@
+{
+    "Estado": "OK",
+    "MsgError": null,
+    "ListaMarcas": [
+        {
+            "Marca": "CHERY",
+            "Modelo": "ICAR",
+            "Color": "N/A"
+        },
+        {
+            "Marca": "CHERY",
+            "Modelo": "TIGGO 2 AT",
+            "Color": "N/A"
+        },
+        {
+            "Marca": "CHERY",
+            "Modelo": "TIGGO 2 MT",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "CHERY",
+            "Modelo": "TIGGO 4",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "CHERY",
+            "Modelo": "TIGGO 8 AT",
+            "Color": "Azul"
+        },
+        {
+            "Marca": "CHERY",
+            "Modelo": "TIGGO 8 AT",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "EV18",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "EX1 BLACK",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "EX1 BLACK EDITION",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "FRIDAY PRO",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "MAGE EV",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 FLAGSHIP",
+            "Color": "Azul"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 FLAGSHIP",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 FLAGSHIP",
+            "Color": "Verde"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 LUX",
+            "Color": "Azul"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 LUX",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 LUX",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NAMMI 01 LUX",
+            "Color": "Verde"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "NANO BOX COMFORT",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "SX5 MT",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "SX5 MT",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH 6 AT",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH 6 AT",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH 6 FLAGSHIP THUNDER PR",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH 6 MT",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH 6 MT",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH6 EV",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "DFM",
+            "Modelo": "ZNA RICH6 EV",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "GEELY",
+            "Modelo": "COOLRAY",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "HONDA",
+            "Modelo": "CRV EX",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "E30X",
+            "Color": "Blanco / Techo negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "E30X",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "E30X",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-J7",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS1",
+            "Color": "Azul / Techo Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS1",
+            "Color": "Blanco / Techo negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS1",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS1",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Blanco / Techo negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Gris / Techo negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "e-JS4",
+            "Color": "Rojo"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 AT FLAGSHIP",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 AT FLAGSHIP",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 CVT COM",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 CVT COM",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 CVT COM",
+            "Color": "Rojo"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 MT COM",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 MT COM",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS2 MT LUX",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS3 CVT",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS3 CVT",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS3 CVT",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS3 CVT",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS4",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS4",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS4",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS4",
+            "Color": "Rojo"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS5",
+            "Color": "Azul"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS5",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS5",
+            "Color": "Rojo"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS8",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS8",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS8 PRO",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "JS8 PRO",
+            "Color": "Negro"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "M4",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "M4",
+            "Color": "Plata"
+        },
+        {
+            "Marca": "JAC",
+            "Modelo": "S3",
+            "Color": "N/A"
+        },
+        {
+            "Marca": "MG",
+            "Modelo": "MG RX 5 DE",
+            "Color": "Azul"
+        },
+        {
+            "Marca": "RENAULT",
+            "Modelo": "SANDERO ST",
+            "Color": "Gris"
+        },
+        {
+            "Marca": "SUZUKI",
+            "Modelo": "ALTO DX",
+            "Color": "Blanco"
+        },
+        {
+            "Marca": "TOYOTA",
+            "Modelo": "RAV 4",
+            "Color": "N/A"
+        }
+    ]
+}

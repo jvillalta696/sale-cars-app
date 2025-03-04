@@ -9,7 +9,7 @@ import FinanciamientoForm from '../components/TabsContracts/FinanciamientoForm.j
 import PaquetesMantenimientoForm from '../components/TabsContracts/PaquetesMantenimientoForm.jsx';
 import ResumenForm from '../components/TabsContracts/ResumenForm.jsx';
 
-const ViewLoadVehicleContract = () => {
+const ViewLoadVehicleContract = ({setCurrentView}) => {
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
     numeroContrato: '',
@@ -133,7 +133,7 @@ const ViewLoadVehicleContract = () => {
               <form>
                 <div className="input-field">
                   <input id="search" type="search" required placeholder='Buscas Contrato por Numero o Nombre de Cliente' />
-                  <label className="label-icon" for="search"><i class="material-icons">search</i></label>
+                  <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                   <i className="material-icons">close</i>
                 </div>
               </form>
@@ -164,6 +164,7 @@ const ViewLoadVehicleContract = () => {
           <InformacionGeneralForm
             formData={formData}
             setFormData={setFormData}
+            setCurrentView={setCurrentView}
           />
         )}
         {activeTab === 1 && (
@@ -189,7 +190,7 @@ const ViewLoadVehicleContract = () => {
         )}
         {activeTab === 6 && <ResumenForm formData={formData} />}
       </div>
-      <div class="divider"></div>
+      <div className="divider"></div>
       <div className="section">
      
         <button

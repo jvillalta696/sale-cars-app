@@ -24,8 +24,7 @@ const Login = () => {
     setUsr((prevUser) => ({
       ...prevUser,
       [name]: value,
-    }));
-    console.log(usr);
+    }));    
   };
 
   useEffect(() => {

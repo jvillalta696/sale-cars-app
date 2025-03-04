@@ -59,7 +59,6 @@ const FormClientes = ({
           CardName: person.Nombre,
           TypeID: person.Tipo,
         });
-        console.log(person);
         setIsFound(true);
         M.toast({
           html: `Persona ${person.Nombre} encontrado!`,

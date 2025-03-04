@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
+import ListClientModal from '../ListClientModal';
 
-const InformacionGeneralForm = ({ formData, setFormData }) => {
+const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
+  const [type, setType] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -32,40 +34,71 @@ const InformacionGeneralForm = ({ formData, setFormData }) => {
     }
   };
 
+  const handleSelectClient = (client) => {
+    if (client.type === 'CF') {
+      setFormData((prevData) => ({
+        ...prevData,
+        U_CARDCODE: client.CardCode,
+        U_CARDNAME: client.CardName,
+      }));
+    }
+    if (client.type === 'CV') {
+      setFormData((prevData) => ({
+        ...prevData,
+        U_CARDCODE_V: client.CardCode,
+        U_CARDNAME_V: client.CardName,
+      }));
+    }
+    setType(null);
+  };
+
+  const handleAddClient = () => {
+    setCurrentView('Clientes');
+    M.Modal.getInstance(document.getElementById('list-client-modal')).close();
+  };
+
   return (
     <div className="card" style={{ padding: '20px', margin: '20px' }}>
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">face</i>
-          <input type="text" name='U_CARDCODE' id='U_CARDCODE' />
+          <input type="text" disabled name='U_CARDCODE' id='U_CARDCODE' value={formData.U_CARDCODE} onChange={handleChange} />
           <label htmlFor="U_CARDCODE">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" name='U_CARDNAME' id='U_CARDCODE' />
+          <input type="text" disabled name='U_CARDNAME' id='U_CARDNAME' value={formData.U_CARDNAME} onChange={handleChange} />
           <label htmlFor="U_CARDNAME">Cliente a facturar</label>
         </div>
         <div className="col s2 m1 input-field">
-          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
+          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
+            href="#list-client-modal"
+            onClick={() => setType('CF')}>
+            <i className="material-icons">search</i>
+          </a>
         </div>
       </div>
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">face</i>
-          <input type="text" name='U_CARDCODE' id='U_CARDCODE' />
-          <label htmlFor="U_CARDCODE">Código</label>
+          <input type="text" disabled name='U_CARDCODE_V' id='U_CARDCODE_V' value={formData.U_CARDCODE_V} onChange={handleChange} />
+          <label htmlFor="U_CARDCODE_V">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" name='U_CARDNAME' id='U_CARDCODE' />
-          <label htmlFor="U_CARDNAME">Cliente Vehículo</label>
+          <input type="text" disabled name='U_CARDNAME_V' id='U_CARDNAME_V' value={formData.U_CARDNAME_V} onChange={handleChange}/>
+          <label htmlFor="U_CARDNAME_V">Cliente Vehículo</label>
         </div>
         <div className="col s2 m1 input-field">
-          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
+          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
+            href="#list-client-modal"
+            onClick={() => setType('CV')}
+          >
+            <i className="material-icons">search</i></a>
         </div>
       </div>
       <div className="row">
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>event</i>
-          <input type="date" name="U_DocDate" id="U_DocDate" />
+          <input type="date" disabled name="U_DocDate" id="U_DocDate" value={formData.U_DocDate || new Date().toISOString().split('T')[0]} onChange={handleChange} />
           <label htmlFor="U_DocDate">Fecha de Documento</label>
         </div>
         <div className="col s12 m4 input-field">
@@ -75,7 +108,7 @@ const InformacionGeneralForm = ({ formData, setFormData }) => {
         </div>
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>attach_money</i>
-          <select name="U_Moneda" id="U_Moneda">
+          <select name="U_Moneda" id="U_Moneda" value={formData.U_Moneda || ""} onChange={handleChange}>
             <option value="" disabled selected>Seleccione una moneda</option>
             <option value="USD">Dolares</option>
             <option value="COL">Colones</option>
@@ -83,7 +116,7 @@ const InformacionGeneralForm = ({ formData, setFormData }) => {
         </div>
       </div>
       <div className="row">
-      <div className="col s12 m3 input-field">
+        <div className="col s12 m3 input-field">
           <i className="material-icons prefix">badge</i>
           <input type="text" name='U_FooVend' id='U_FooVend' />
           <label htmlFor="U_FooVend">Código</label>
@@ -98,11 +131,12 @@ const InformacionGeneralForm = ({ formData, setFormData }) => {
       </div>
       <div className="row">
         <div className="col s12 input-field" >
-        <i className="material-icons prefix">comment</i>
-        <textarea id="U_Opcion" name='U_Opcion' className="materialize-textarea" data-length="230"></textarea>
-        <label htmlFor="U_Opcion">Comentarios</label>
+          <i className="material-icons prefix">comment</i>
+          <textarea id="U_Opcion" name='U_Opcion' className="materialize-textarea" data-length="230"></textarea>
+          <label htmlFor="U_Opcion">Comentarios</label>
         </div>
       </div>
+      <ListClientModal onSelectClient={handleSelectClient} onAddClient={handleAddClient} type={type} setType={setType}/>
     </div>
   );
 };

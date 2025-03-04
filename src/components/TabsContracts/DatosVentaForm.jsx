@@ -54,7 +54,7 @@ const DatosVentaForm = ({ formData, setFormData }) => {
                   <label htmlFor="U_Pre_Imp">Impuestos</label>
                 </div>
               </div>
-              <div class="divider"></div>
+              <div className="divider"></div>
 
               <div className="row">
                 <div className="col s12 m6 offset-m6 l4 offset-l6 input-field">

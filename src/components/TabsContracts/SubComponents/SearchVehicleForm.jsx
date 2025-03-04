@@ -1,59 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
+import mockData from '../../../mockData/mokFilterVehicles.json';
 
 const SearchVehicleForm = () => {
-    useEffect(() => {
-        const elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);        
-      }, []);
-    return (
-        <>
-      <div className="card" style={{ padding: '20px', margin: '20px' }}>
-        <h6>Buscar Vehículo</h6>
-        <div className="row">
-          <div className="col s12 m3 input-field">
-            <i className="material-icons prefix">directions_car</i>
-            <select name='marca' id='marca'>
-              <option value="" disabled selected>Seleccione un modelo</option>
-              <option value="Toyota">Toyota</option>
-              <option value="Honda">Honda</option>
-              <option value="Nissan">Nissan</option>
-              <option value="Hyundai">Hyundai</option>
-              <option value="Chevrolet">Chevrolet</option>
-              <option value="Ford">Ford</option>
-            </select>
-          </div>
-          <div className="col s12 m3 offset-m1 input-field">
-            <i className="material-icons prefix">directions_car</i>
-            <select name='modelo' id='modelo' >
-              <option value="" disabled selected>Seleccione un modelo</option>
-              <option value="Corolla">Corolla</option>
-              <option value="Yaris">Yaris</option>
-              <option value="Civic">Civic</option>
-              <option value="Accord">Accord</option>
-              <option value="Sentra">Sentra</option>
-              <option value="Altima">Altima</option>
-              <option value="Accent">Accent</option>
-              <option value="Elantra">Elantra</option>
-              <option value="Spark">Spark</option>
-              <option value="Sonic">Sonic</option>
-              <option value="Fiesta">Fiesta</option>
-              <option value="Focus">Focus</option>
-            </select>
-          </div>
-          <div className="col s12 m3 offset-m1 input-field">
-            <i className="material-icons prefix">palette</i>
-            <select name="color" id="color">
-              <option value="blanco">Blanco</option>
-            </select>
-          </div>
-          <div className="col s2 m1 input-field right">
-            <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
-          </div>
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const [models, setModels] = useState([]);
+  const [colors, setColors] = useState([]);
+
+  useEffect(() => {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
+  }, []);
+
+  useEffect(() => {
+    if (selectedBrand) {
+      const filteredModels = mockData.ListaMarcas.filter(item => item.Marca === selectedBrand).map(item => item.Modelo);
+      setModels([...new Set(filteredModels)]);
+      setSelectedModel('');
+      setColors([]);
+    } else {
+      setModels([]);
+      setSelectedModel('');
+      setColors([]);
+    }  
+  }, [selectedBrand]);
+
+  useEffect(() => {
+    if (selectedModel) {
+      const filteredColors = mockData.ListaMarcas.filter(item => item.Marca === selectedBrand && item.Modelo === selectedModel).map(item => item.Color);
+      setColors([...new Set(filteredColors)]);
+    } else {
+      setColors([]);
+    }
+  }, [selectedModel]);
+  
+//materialize-css needs to be initialized after the select options are updated
+  useEffect(() => {
+    const elems = document.querySelectorAll('select');
+    M.FormSelect.init(elems);
+  }, [models, colors]);
+
+  return (
+    <div className="card" style={{ padding: '20px', margin: '20px' }}>
+      <h6>Buscar Vehículo</h6>
+      <div className="row">
+        <div className="col s12 m3 input-field">
+          <i className="material-icons prefix">directions_car</i>
+          <select name='marca' id='marca' value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
+            <option value="" disabled selected>Seleccione una marca</option>
+            {[...new Set(mockData.ListaMarcas.map(item => item.Marca))].map((brand, index) => (
+              <option key={index} value={brand}>{brand}</option>
+            ))}
+          </select>
+          <label htmlFor="marca">Marca</label>
+        </div>
+        <div className="col s12 m3 offset-m1 input-field">
+          <i className="material-icons prefix">directions_car</i>
+          <select name='modelo' id='modelo' value={selectedModel} disabled={!selectedBrand} onChange={(e) => setSelectedModel(e.target.value)} >
+            <option value="" disabled selected>Seleccione un modelo</option>
+            {models.map((model, index) => (
+              <option key={index} value={model}>{model}</option>
+            ))}
+          </select>
+          <label htmlFor="modelo">Modelo</label>
+        </div>
+        <div className="col s12 m3 offset-m1 input-field">
+          <i className="material-icons prefix">palette</i>
+          <select name="color" id="color" disabled={!selectedModel}>
+            <option value="" disabled selected>Seleccione un color</option>
+            {colors.map((color, index) => (
+              <option key={index} value={color}>{color}</option>
+            ))}
+          </select>
+          <label htmlFor="color">Color</label>
+        </div>
+        <div className="col s2 m1 input-field right">
+          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
         </div>
       </div>
-    </>
-    );
+    </div>
+  );
 };
 
 export default SearchVehicleForm;

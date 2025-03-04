@@ -45,7 +45,6 @@ const SearchBar = ({ onSelectClient, onIsFound }) => {
         html: `Cliente ${client.CardName} seleccionado`,
         classes: 'green',
       });
-      console.log(clnt.SocioNegocio);
     } catch (error) {
       M.toast({
         html: `Error: ${error.message || error}`,

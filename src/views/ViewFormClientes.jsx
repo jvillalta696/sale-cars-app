@@ -53,15 +53,13 @@ const ViewFormClientes = () => {
     }
     setFormData({ ...formData, Contacto: newContacto });
     setIsModalOpen(false);
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.CardCode !== '' && formData.CardCode !== undefined) {
       // Update existing client
-      const res = await updateClient(apiConfig, currentCompany.code, formData);
-      console.log(formData);
+      const res = await updateClient(apiConfig, currentCompany.code, formData);      
       M.toast({
         html: `Cliente ${formData.CardName} Actualizado con exito`,
         classes: 'green',
@@ -75,7 +73,6 @@ const ViewFormClientes = () => {
           currentCompany.code,
           newClient
         );
-        console.log(res);
         if (res.Estado === 'Err') throw new Error(res.MsgError);
         fetchClients();
         M.toast({

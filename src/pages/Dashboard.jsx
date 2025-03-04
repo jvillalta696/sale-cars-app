@@ -9,7 +9,7 @@ const Dashboard = () => {
   const renderView = () => {
     const view = views.find((v) => v.name === currentView);
     return view ? (
-      <view.component />
+      <view.component setCurrentView={setCurrentView} />
     ) : (
       <p>Selecciona una vista desde el menú</p>
     );
