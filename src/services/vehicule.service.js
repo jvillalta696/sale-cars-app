@@ -34,3 +34,54 @@ export const getVehiculeByVIN = async (config, db, data) => {
     throw error.message;
   }
 };
+
+export const getVehiclesListBrand = async (config, db) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.get(
+      `${config.URI}/ContratoVentas/listarmarca?CodeBD=${db}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.message;
+  }  
+};
+
+export const getVehiclesListUseds = async (config, db) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.get(
+      `${config.URI}/ContratoVentas/listarvehiusados?CodeBD=${db}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.message;
+  }  
+};
+
+export const getVehicleSaleData = async (config, db, brand, model, color) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.get(
+      `${config.URI}/ContratoVentas/vehiventa?CodeBD=${db}&Marca=${brand}&Modelo=${model}&Color=${color}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.VehiculoVenta;
+  } catch (error) {
+    throw error.message;
+  }
+};

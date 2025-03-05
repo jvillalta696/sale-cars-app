@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
-import mockData from '../../../mockData/mokFilterVehicles.json';
+import { useVehicle } from '../../../context/VehicleNewContext';
+import { getVehicleSaleData } from '../../../services/vehicule.service';
+import { useAuth } from '../../../context/AuthContext';
 
-const SearchVehicleForm = () => {
+const SearchVehicleForm = ({  setVehicleData }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
   const [models, setModels] = useState([]);
   const [colors, setColors] = useState([]);
+  const { vehicles } = useVehicle();
+  const { currentCompany,  apiConfig } = useAuth();
 
   useEffect(() => {
     const elems = document.querySelectorAll('select');
@@ -15,7 +20,7 @@ const SearchVehicleForm = () => {
 
   useEffect(() => {
     if (selectedBrand) {
-      const filteredModels = mockData.ListaMarcas.filter(item => item.Marca === selectedBrand).map(item => item.Modelo);
+      const filteredModels = vehicles.filter(item => item.Marca === selectedBrand).map(item => item.Modelo);
       setModels([...new Set(filteredModels)]);
       setSelectedModel('');
       setColors([]);
@@ -28,7 +33,7 @@ const SearchVehicleForm = () => {
 
   useEffect(() => {
     if (selectedModel) {
-      const filteredColors = mockData.ListaMarcas.filter(item => item.Marca === selectedBrand && item.Modelo === selectedModel).map(item => item.Color);
+      const filteredColors = vehicles.filter(item => item.Marca === selectedBrand && item.Modelo === selectedModel).map(item => item.Color);
       setColors([...new Set(filteredColors)]);
     } else {
       setColors([]);
@@ -41,6 +46,15 @@ const SearchVehicleForm = () => {
     M.FormSelect.init(elems);
   }, [models, colors]);
 
+  const handleSearch = async () => {
+    try {
+      const vehicleData = await getVehicleSaleData(apiConfig, currentCompany.code, selectedBrand, selectedModel, selectedColor);
+      setVehicleData(vehicleData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="card" style={{ padding: '20px', margin: '20px' }}>
       <h6>Buscar Vehículo</h6>
@@ -49,7 +63,7 @@ const SearchVehicleForm = () => {
           <i className="material-icons prefix">directions_car</i>
           <select name='marca' id='marca' value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
             <option value="" disabled selected>Seleccione una marca</option>
-            {[...new Set(mockData.ListaMarcas.map(item => item.Marca))].map((brand, index) => (
+            {[...new Set(vehicles.map(item => item.Marca))].map((brand, index) => (
               <option key={index} value={brand}>{brand}</option>
             ))}
           </select>
@@ -67,7 +81,7 @@ const SearchVehicleForm = () => {
         </div>
         <div className="col s12 m3 offset-m1 input-field">
           <i className="material-icons prefix">palette</i>
-          <select name="color" id="color" disabled={!selectedModel}>
+          <select name="color" id="color" disabled={!selectedModel} value={selectedColor} onChange={(e) => setSelectedColor(e.target.value)}>
             <option value="" disabled selected>Seleccione un color</option>
             {colors.map((color, index) => (
               <option key={index} value={color}>{color}</option>
@@ -76,7 +90,9 @@ const SearchVehicleForm = () => {
           <label htmlFor="color">Color</label>
         </div>
         <div className="col s2 m1 input-field right">
-          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
+          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable" onClick={handleSearch}>
+            <i className="material-icons">search</i>
+          </a>
         </div>
       </div>
     </div>

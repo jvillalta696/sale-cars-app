@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
 import ListClientModal from '../ListClientModal';
+import ListSellersModal from '../ListSellersModal';
 
 const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
   const [type, setType] = useState(null);
@@ -50,6 +51,14 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       }));
     }
     setType(null);
+  };
+
+  const handleSelectSeller = (seller) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      U_FooVend: seller.SlpCode,
+      U_SlpName: seller.SlpName,
+    }));
   };
 
   const handleAddClient = () => {
@@ -118,15 +127,18 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">badge</i>
-          <input type="text" name='U_FooVend' id='U_FooVend' />
+          <input type="text" name='U_FooVend' id='U_FooVend' disabled value={formData.U_FooVend || ""} onChange={handleChange} />
           <label htmlFor="U_FooVend">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" name='U_SlpName' id='U_SlpName' />
+          <input type="text" name='U_SlpName' id='U_SlpName' disabled value={formData.U_SlpName|| ""} onChange={handleChange} />
           <label htmlFor="U_SlpName">Vendedor</label>
         </div>
         <div className="col s2 m1 input-field">
-          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable"><i className="material-icons">search</i></a>
+          <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
+            href="#list-seller-modal">
+            <i className="material-icons">search</i>
+          </a>
         </div>
       </div>
       <div className="row">
@@ -137,6 +149,7 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
         </div>
       </div>
       <ListClientModal onSelectClient={handleSelectClient} onAddClient={handleAddClient} type={type} setType={setType}/>
+      <ListSellersModal onSelectSeller={handleSelectSeller} />
     </div>
   );
 };
