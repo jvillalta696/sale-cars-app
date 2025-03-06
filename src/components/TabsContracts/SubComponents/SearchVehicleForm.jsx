@@ -3,6 +3,7 @@ import M from 'materialize-css';
 import { useVehicle } from '../../../context/VehicleNewContext';
 import { getVehicleSaleData } from '../../../services/vehicule.service';
 import { useAuth } from '../../../context/AuthContext';
+import { use } from 'react';
 
 const SearchVehicleForm = ({  setVehicleData }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -11,6 +12,7 @@ const SearchVehicleForm = ({  setVehicleData }) => {
   const [models, setModels] = useState([]);
   const [colors, setColors] = useState([]);
   const { vehicles } = useVehicle();
+  const [data, setData] = useState(null);
   const { currentCompany,  apiConfig } = useAuth();
 
   useEffect(() => {
@@ -48,10 +50,17 @@ const SearchVehicleForm = ({  setVehicleData }) => {
 
   const handleSearch = async () => {
     try {
+      setVehicleData(null);
       const vehicleData = await getVehicleSaleData(apiConfig, currentCompany.code, selectedBrand, selectedModel, selectedColor);
       setVehicleData(vehicleData);
+      setSelectedBrand('');
+      setSelectedModel('');
+      setSelectedColor('');
+      setModels([]);
+      setColors([]);
     } catch (error) {
       console.error(error);
+      setVehicleData(null);
     }
   };
 

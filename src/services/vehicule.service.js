@@ -79,7 +79,7 @@ export const getVehicleSaleData = async (config, db, brand, model, color) => {
           Authorization: `Bearer ${token}`,
         },
       }
-    );
+    );    
     return response.data.VehiculoVenta;
   } catch (error) {
     throw error.message;
