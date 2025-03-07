@@ -10,6 +10,8 @@ import PaquetesMantenimientoForm from '../components/TabsContracts/PaquetesMante
 import ResumenForm from '../components/TabsContracts/ResumenForm.jsx';
 import { VehicleNewProvider } from '../context/VehicleNewContext.jsx';
 import { SellerProvider } from '../context/SellerContext.jsx';
+import { ItemProvider } from '../context/ItemContext.jsx'; // Import ItemProvider
+import { BankProvider } from '../context/BankContext.jsx'; // Import BankProvider
 
 const ViewLoadVehicleContract = ({ setCurrentView }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -114,105 +116,109 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   return (
     <VehicleNewProvider>
       <SellerProvider>
-        <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
-          <div className="row">
-            <div className="col s12">
-              <h4 className="center">Contratos</h4>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 m2 input-field" hidden={!formData.numeroContrato}>
-              <input
-                type="text"
-                id="numeroContrato"
-                name="numeroContrato"
-                disabled
-                value={formData.numeroContrato}
-              />
-              <label htmlFor="numeroContrato">Número de Contrato</label>
-            </div>
-            <div className={`col s12 ${!formData.numeroContrato ? 'm6 offset-m3' : 'm6 offset-m1'}`}>
-              <nav>
-                <div className="nav-wrapper teal">
-                  <form>
-                    <div className="input-field">
-                      <input id="search" type="search" required placeholder='Buscas Contrato por Numero o Nombre de Cliente' />
-                      <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                      <i className="material-icons">close</i>
-                    </div>
-                  </form>
+        <ItemProvider> {/* Wrap with ItemProvider */}
+          <BankProvider> {/* Wrap with BankProvider */}
+            <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
+              <div className="row">
+                <div className="col s12">
+                  <h4 className="center">Contratos</h4>
                 </div>
-              </nav>
-            </div>
-          </div>
-          <ul className="tabs">
-            {tabs.map((tab, index) => (
-              <li
-                key={index}
-                className={`tab ${activeTab === index ? 'active' : ''}`}
-                onClick={() => setActiveTab(index)}
-              >
-                <a href="#!">{tab}</a>
-              </li>
-            ))}
-          </ul>
+              </div>
+              <div className="row">
+                <div className="col s12 m2 input-field" hidden={!formData.numeroContrato}>
+                  <input
+                    type="text"
+                    id="numeroContrato"
+                    name="numeroContrato"
+                    disabled
+                    value={formData.numeroContrato}
+                  />
+                  <label htmlFor="numeroContrato">Número de Contrato</label>
+                </div>
+                <div className={`col s12 ${!formData.numeroContrato ? 'm6 offset-m3' : 'm6 offset-m1'}`}>
+                  <nav>
+                    <div className="nav-wrapper teal">
+                      <form>
+                        <div className="input-field">
+                          <input id="search" type="search" required placeholder='Buscas Contrato por Numero o Nombre de Cliente' />
+                          <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                          <i className="material-icons">close</i>
+                        </div>
+                      </form>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+              <ul className="tabs">
+                {tabs.map((tab, index) => (
+                  <li
+                    key={index}
+                    className={`tab ${activeTab === index ? 'active' : ''}`}
+                    onClick={() => setActiveTab(index)}
+                  >
+                    <a href="#!">{tab}</a>
+                  </li>
+                ))}
+              </ul>
 
-          <div className="section">
-            <div className="row">
-              <div className="col s12">
-                <h5 className='center'>{tabs[activeTab]}</h5>
+              <div className="section">
+                <div className="row">
+                  <div className="col s12">
+                    <h5 className='center'>{tabs[activeTab]}</h5>
+                  </div>
+                </div>
+
+                {activeTab === 0 && (
+                  <InformacionGeneralForm
+                    formData={formData}
+                    setFormData={setFormData}
+                    setCurrentView={setCurrentView}
+                  />
+                )}
+                {activeTab === 1 && (
+                  <DatosVehiculoForm formData={formData} setFormData={setFormData} />
+                )}
+                {activeTab === 2 && (
+                  <DatosVentaForm formData={formData} setFormData={setFormData} />
+                )}
+                {activeTab === 3 && (
+                  <DatosVehiculoUsadoForm
+                    formData={formData}
+                    setFormData={setFormData}
+                  />
+                )}
+                {activeTab === 4 && (
+                  <FinanciamientoForm formData={formData} setFormData={setFormData} />
+                )}
+                {activeTab === 5 && (
+                  <PaquetesMantenimientoForm
+                    formData={formData}
+                    setFormData={setFormData}
+                  />
+                )}
+                {activeTab === 6 && <ResumenForm formData={formData} />}
+              </div>
+              <div className="divider"></div>
+              <div className="section">
+
+                <button
+                  className="btn"
+                  disabled={activeTab === 0}
+                  onClick={() => setActiveTab(activeTab - 1)}
+                >
+                  Anterior
+                </button>
+                <button
+                  className="btn right"
+                  disabled={activeTab === tabs.length - 1 || !validarSeccion()}
+                  onClick={() => setActiveTab(activeTab + 1)}
+                >
+                  Siguiente
+                </button>
               </div>
             </div>
-
-            {activeTab === 0 && (
-              <InformacionGeneralForm
-                formData={formData}
-                setFormData={setFormData}
-                setCurrentView={setCurrentView}
-              />
-            )}
-            {activeTab === 1 && (
-              <DatosVehiculoForm formData={formData} setFormData={setFormData} />
-            )}
-            {activeTab === 2 && (
-              <DatosVentaForm formData={formData} setFormData={setFormData} />
-            )}
-            {activeTab === 3 && (
-              <DatosVehiculoUsadoForm
-                formData={formData}
-                setFormData={setFormData}
-              />
-            )}
-            {activeTab === 4 && (
-              <FinanciamientoForm formData={formData} setFormData={setFormData} />
-            )}
-            {activeTab === 5 && (
-              <PaquetesMantenimientoForm
-                formData={formData}
-                setFormData={setFormData}
-              />
-            )}
-            {activeTab === 6 && <ResumenForm formData={formData} />}
-          </div>
-          <div className="divider"></div>
-          <div className="section">
-
-            <button
-              className="btn"
-              disabled={activeTab === 0}
-              onClick={() => setActiveTab(activeTab - 1)}
-            >
-              Anterior
-            </button>
-            <button
-              className="btn right"
-              disabled={activeTab === tabs.length - 1 || !validarSeccion()}
-              onClick={() => setActiveTab(activeTab + 1)}
-            >
-              Siguiente
-            </button>
-          </div>
-        </div>
+          </BankProvider> {/* End BankProvider */}
+        </ItemProvider> {/* End ItemProvider */}
       </SellerProvider>
     </VehicleNewProvider>
   );

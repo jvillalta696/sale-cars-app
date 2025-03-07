@@ -170,7 +170,8 @@ const ResumenForm = ({ formData }) => {
         <h6>Paquetes de Mantenimiento</h6>
         {formData.paquetesMantenimiento.map((paquete, index) => (
           <p key={index}>
-            <strong>Paquete {index + 1}:</strong> {paquete}
+            <strong>Paquete {index + 1}:</strong> 
+            {paquete.Tipo} - {paquete.ItemCode} - {paquete.ItemName} - {paquete.Precio} - {paquete.Cantidad} - {paquete.Total}
           </p>
         ))}
       </div>

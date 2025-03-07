@@ -117,8 +117,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
         </div>
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>attach_money</i>
-          <select name="U_Moneda" id="U_Moneda" value={formData.U_Moneda || ""} onChange={handleChange}>
-            <option value="" disabled selected>Seleccione una moneda</option>
+          <select name="U_Moneda" id="U_Moneda" value={formData.U_Moneda} onChange={handleChange}>
+            <option value="" disabled>Seleccione una moneda</option>
             <option value="USD">Dolares</option>
             <option value="COL">Colones</option>
           </select>
