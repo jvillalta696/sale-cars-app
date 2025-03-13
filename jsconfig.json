@@ -1,0 +1,14 @@
+{
+    "compilerOptions": { // Configuración del compilador (en este caso TypeScript, aunque usamos JavaScript)
+      "checkJs": true, // Habilita la verificación de errores en archivos JavaScript. Esto permite que el editor valide el código como si fuera TypeScript.
+      "baseUrl": ".", // Define la ruta base para las referencias relativas. Aquí está configurada como la raíz del proyecto.
+      "paths": { // Define alias para rutas, facilitando el acceso a ciertos directorios o archivos.
+        "@models/*": ["src/models/*"] // El alias "@models/*" apunta a "src/models/*". Esto te permite importar algo como '@models/Usuario' en lugar de usar rutas relativas largas.
+      },
+      "jsx": "react" // Habilita el soporte para JSX, necesario para trabajar con React en archivos .jsx o .js.
+    },
+    "include": [ // Especifica qué archivos o carpetas incluir en el proyecto para validación y análisis.
+      "src/**/*.js", // Incluye todos los archivos JavaScript dentro de la carpeta src y subcarpetas.
+      "src/**/*.jsx" // Incluye todos los archivos JSX dentro de la carpeta src y subcarpetas.
+    ]
+  }

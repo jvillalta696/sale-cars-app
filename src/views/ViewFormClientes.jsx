@@ -8,12 +8,21 @@ import { useAuth } from '../context/AuthContext';
 import ContactModal from '../components/ContactModal';
 import { useClient } from '../context/ClientContext';
 
+/**
+ * @typedef {import('../models/formDataModel.ts').FormDataModel} FormDataModel
+ * @typedef {import('../models/contactModel.ts').ContactModel} ContactModel
+ */
+
 const ViewFormClientes = () => {
+  /** @type {[FormDataModel, React.Dispatch<React.SetStateAction<FormDataModel>>]} */
   const [formData, setFormData] = useState({ ...formDataModel });
   const { apiConfig, currentCompany } = useAuth();
   const { fetchClients } = useClient();
+  /** @type {[boolean, React.Dispatch<React.SetStateAction<boolean>>]} */
   const [isModalOpen, setIsModalOpen] = useState(false);
+  /** @type {[ContactModel | null, React.Dispatch<React.SetStateAction<ContactModel | null>>]} */
   const [selectedContact, setSelectedContact] = useState(null);
+  /** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
   const [titleType, setTitleType] = useState('Crear');
 
   const handleChange = (e) => {

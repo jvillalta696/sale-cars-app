@@ -8,6 +8,21 @@ import { getGroupList, getPerson } from '../services/client.service';
 import { useAuth } from '../context/AuthContext';
 import LoadingIcon from './LoadingIcon';
 
+/**
+ * @typedef {import('../models/formDataModel.ts').FormDataModel} FormDataModel
+ * @typedef {import('../models/contactModel.ts').ContactModel} ContactModel
+ */
+
+/**
+ * @param {{
+ *   formData: FormDataModel,
+ *   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void,
+ *   handleAddContactPerson: () => void,
+ *   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
+ *   setFormData: React.Dispatch<React.SetStateAction<FormDataModel>>,
+ *   handleEditContactPerson: (index: number) => void,
+ * }} props
+ */
 const FormClientes = ({
   formData,
   handleChange,
