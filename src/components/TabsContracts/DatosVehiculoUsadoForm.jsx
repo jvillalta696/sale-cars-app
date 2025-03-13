@@ -6,17 +6,19 @@ import { useAuth } from '../../context/AuthContext';
 
 const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
   const [loading, setLoading] = useState(false);
-  const [vehicleData, setVehicleData] = useState(null);
-  const { currentCompany,  apiConfig } = useAuth();
+  const [vehicleData, setVehicleData] = useState(formData.vehiculoUsadoxContrato[0]);
+  const { currentCompany, apiConfig } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      datosVehiculoUsado: {
-        ...prevData.datosVehiculoUsado,
-        [name]: value,
-      },
+      vehiculoUsadoxContrato: [
+        {
+          ...prevData.vehiculoUsadoxContrato[0],
+          [name]: value,
+        }
+      ]
     }));
   };
 
@@ -27,7 +29,7 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
       setVehicleData(data);
       setFormData((prevData) => ({
         ...prevData,
-        datosVehiculoUsado: data,
+        vehiculoUsadoxContrato: [data],
       }));
     } catch (error) {
       console.error(error);
@@ -55,86 +57,44 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
             <div className="row">
               <div className="col s12 m6 offset-m6 input-field">
                 <i className='material-icons prefix'>price_change</i>
-                <input type="number" name='PRECIO' onChange={handleChange} />
-                <label htmlFor="PRECIO">Precio</label>
+                <input type="number" name='precioRecibo' value={vehicleData?.precioRecibo || ''} onChange={handleChange} />
+                <label htmlFor="precioRecibo">Precio</label>
               </div>
             </div>
             <div className="row">
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Unidad} disabled />
-                <label htmlFor="UNIDAD">UNIDAD</label>
+                <input type="text" value={vehicleData?.unidad || ''} disabled />
+                <label htmlFor="unidad">Unidad</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Empresa} disabled />
-                <label htmlFor="EMPRESA">EMPRESA</label>
+                <input type="text" value={vehicleData?.marca || ''} disabled />
+                <label htmlFor="marca">Marca</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Tipo} disabled />
-                <label htmlFor="TIPO">Tipo</label>
+                <input type="text" value={vehicleData?.modelo || ''} disabled />
+                <label htmlFor="modelo">Modelo</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.VIN} disabled />
-                <label htmlFor="VIN">VIN</label>
+                <input type="text" value={vehicleData?.color || ''} disabled />
+                <label htmlFor="color">Color</label>
               </div>
             </div>
             <div className="row">
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Marca} disabled />
-                <label htmlFor="MARCA">MARCA</label>
+                <input type="text" value={vehicleData?.anio || ''} disabled />
+                <label htmlFor="anio">Año</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Modelo} disabled />
-                <label htmlFor="MODELO">MODELO</label>
+                <input type="text" value={vehicleData?.vin || ''} disabled />
+                <label htmlFor="vin">VIN</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Color} disabled />
-                <label htmlFor="COLOR">COLOR</label>
+                <input type="text" value={vehicleData?.trasmision || ''} disabled />
+                <label htmlFor="trasmision">Transmisión</label>
               </div>
               <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Ano} disabled />
-                <label htmlFor="ANIO">AÑO</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Combustible} disabled />
-                <label htmlFor="COMBUSTIBLE">COMBUSTIBLE</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Trasmision} disabled />
-                <label htmlFor="TRASMISION">TRASMISION</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Ejes} disabled />
-                <label htmlFor="EJES">EJES</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Traccion} disabled />
-                <label htmlFor="TRACCION">TRACCION</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.DiasInvent} disabled />
-                <label htmlFor="D_Invetarios">D_Invetarios</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Ubicacion} disabled />
-                <label htmlFor="UBICACION">UBICACION</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Estatus} disabled />
-                <label htmlFor="ESTATUS">ESTATUS</label>
-              </div>
-              <div className="col s12 m3 input-field">
-                <input type="text" value={vehicleData.Placa} disabled />
-                <label htmlFor="PLACA">PLACA</label>
-              </div>
-              <div className="row">
-                <div className="col s12 m4 input-field">
-                  <input type="text" value={vehicleData.Clase} disabled />
-                  <label htmlFor="CLASE">CLASE</label>
-                </div>
+                <input type="text" value={vehicleData?.combustible || ''} disabled />
+                <label htmlFor="combustible">Combustible</label>
               </div>
             </div>
           </>

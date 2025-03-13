@@ -18,20 +18,21 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
     const elems = document.querySelectorAll('select');
     M.FormSelect.init(elems);
     M.updateTextFields();
-    const textAreas = document.querySelectorAll('textarea#U_Opcion');
+    const textAreas = document.querySelectorAll('textarea#Opciones');
     M.CharacterCounter.init(textAreas);
   }, [formData]);
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'Abierto':
-        return 'lock_open';
-      case 'Cerrado':
-        return 'lock';
-      case 'Cancelado':
+      case "0":
         return 'cancel';
-      default:
+      case "2":
         return 'help_outline';
+      case "1":
+        return 'lock_open';
+      case "3":
+        return 'lock';      
+      
     }
   };
 
@@ -39,15 +40,15 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
     if (client.type === 'CF') {
       setFormData((prevData) => ({
         ...prevData,
-        U_CARDCODE: client.CardCode,
-        U_CARDNAME: client.CardName,
+        CodCliFactura: client.CardCode,
+        NombCliFactura: client.CardName,
       }));
     }
     if (client.type === 'CV') {
       setFormData((prevData) => ({
         ...prevData,
-        U_CARDCODE_V: client.CardCode,
-        U_CARDNAME_V: client.CardName,
+        CodCliVehiculo: client.CardCode,
+        NombCliVehiculo: client.CardName,
       }));
     }
     setType(null);
@@ -56,8 +57,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
   const handleSelectSeller = (seller) => {
     setFormData((prevData) => ({
       ...prevData,
-      U_FooVend: seller.SlpCode,
-      U_SlpName: seller.SlpName,
+      CodVendedor: seller.SlpCode,
+      NombVendedor: seller.SlpName,
     }));
   };
 
@@ -71,12 +72,12 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">face</i>
-          <input type="text" disabled name='U_CARDCODE' id='U_CARDCODE' value={formData.U_CARDCODE} onChange={handleChange} />
-          <label htmlFor="U_CARDCODE">Código</label>
+          <input type="text" disabled name='CodCliFactura' id='CodCliFactura' value={formData.CodCliFactura} onChange={handleChange} />
+          <label htmlFor="CodCliFactura">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" disabled name='U_CARDNAME' id='U_CARDNAME' value={formData.U_CARDNAME} onChange={handleChange} />
-          <label htmlFor="U_CARDNAME">Cliente a facturar</label>
+          <input type="text" disabled name='NombCliFactura' id='NombCliFactura' value={formData.NombCliFactura} onChange={handleChange} />
+          <label htmlFor="NombCliFactura">Cliente a facturar</label>
         </div>
         <div className="col s2 m1 input-field">
           <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
@@ -89,12 +90,12 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">face</i>
-          <input type="text" disabled name='U_CARDCODE_V' id='U_CARDCODE_V' value={formData.U_CARDCODE_V} onChange={handleChange} />
-          <label htmlFor="U_CARDCODE_V">Código</label>
+          <input type="text" disabled name='CodCliVehiculo' id='CodCliVehiculo' value={formData.CodCliVehiculo} onChange={handleChange} />
+          <label htmlFor="CodCliVehiculo">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" disabled name='U_CARDNAME_V' id='U_CARDNAME_V' value={formData.U_CARDNAME_V} onChange={handleChange}/>
-          <label htmlFor="U_CARDNAME_V">Cliente Vehículo</label>
+          <input type="text" disabled name='NombCliVehiculo' id='NombCliVehiculo' value={formData.NombCliVehiculo} onChange={handleChange}/>
+          <label htmlFor="NombCliVehiculo">Cliente Vehículo</label>
         </div>
         <div className="col s2 m1 input-field">
           <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
@@ -107,17 +108,22 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>event</i>
-          <input type="date" disabled name="U_DocDate" id="U_DocDate" value={formData.U_DocDate || new Date().toISOString().split('T')[0]} onChange={handleChange} />
-          <label htmlFor="U_DocDate">Fecha de Documento</label>
+          <input type="date" name="Fecha" id="Fecha" value={formData.Fecha.split('T')[0]} onChange={handleChange} />
+          <label htmlFor="Fecha" className="active">Fecha de Documento</label>
         </div>
         <div className="col s12 m4 input-field">
-          <i className='material-icons prefix'>{getStatusIcon('Abierto')}</i>
-          <input type="text" name='U_Estado' id='U_Estado' disabled value={'Abierto'} />
+          <i className='material-icons prefix'>{getStatusIcon(formData.U_Estado)}</i>
+          <select name='U_Estado' id='U_Estado' value={formData.U_Estado} onChange={handleChange}>
+            <option value="0">Cancelado</option>
+            <option value="1">Trámite</option>
+            <option value="2">Pend. Fact</option>
+            <option value="3">Facturado</option>
+          </select>
           <label htmlFor="U_Estado">Estado</label>
         </div>
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>attach_money</i>
-          <select name="U_Moneda" id="U_Moneda" value={formData.U_Moneda} onChange={handleChange}>
+          <select name="Moneda" id="Moneda" value={formData.Moneda} onChange={handleChange}>
             <option value="" disabled>Seleccione una moneda</option>
             <option value="USD">Dolares</option>
             <option value="COL">Colones</option>
@@ -127,12 +133,12 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m3 input-field">
           <i className="material-icons prefix">badge</i>
-          <input type="text" name='U_FooVend' id='U_FooVend' disabled value={formData.U_FooVend || ""} onChange={handleChange} />
-          <label htmlFor="U_FooVend">Código</label>
+          <input type="text" name='CodVendedor' id='CodVendedor' disabled value={formData.CodVendedor || ""} onChange={handleChange} />
+          <label htmlFor="CodVendedor">Código</label>
         </div>
         <div className="col s10 m8 input-field">
-          <input type="text" name='U_SlpName' id='U_SlpName' disabled value={formData.U_SlpName|| ""} onChange={handleChange} />
-          <label htmlFor="U_SlpName">Vendedor</label>
+          <input type="text" name='NombVendedor' id='NombVendedor' disabled value={formData.NombVendedor|| ""} onChange={handleChange} />
+          <label htmlFor="NombVendedor">Vendedor</label>
         </div>
         <div className="col s2 m1 input-field">
           <a className="btn-floating btn-medium waves-effect waves-light teal hoverable modal-trigger"
@@ -144,8 +150,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 input-field" >
           <i className="material-icons prefix">comment</i>
-          <textarea id="U_Opcion" name='U_Opcion' className="materialize-textarea" data-length="230"></textarea>
-          <label htmlFor="U_Opcion">Comentarios</label>
+          <textarea id="Opciones" name='Opciones' className="materialize-textarea" data-length="230" value={formData.Opciones} onChange={handleChange}></textarea>
+          <label htmlFor="Opciones">Comentarios</label>
         </div>
       </div>
       <ListClientModal onSelectClient={handleSelectClient} onAddClient={handleAddClient} type={type} setType={setType}/>

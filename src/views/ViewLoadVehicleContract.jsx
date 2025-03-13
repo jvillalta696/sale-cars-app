@@ -1,74 +1,86 @@
-import { useState } from 'react';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './tabs.css'
-import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm.jsx';
-import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm.jsx';
-import DatosVentaForm from '../components/TabsContracts/DatosVentaForm.jsx';
-import DatosVehiculoUsadoForm from '../components/TabsContracts/DatosVehiculoUsadoForm.jsx';
-import FinanciamientoForm from '../components/TabsContracts/FinanciamientoForm.jsx';
-import PaquetesMantenimientoForm from '../components/TabsContracts/PaquetesMantenimientoForm.jsx';
-import ResumenForm from '../components/TabsContracts/ResumenForm.jsx';
-import { VehicleNewProvider } from '../context/VehicleNewContext.jsx';
-import { SellerProvider } from '../context/SellerContext.jsx';
-import { ItemProvider } from '../context/ItemContext.jsx'; // Import ItemProvider
-import { BankProvider } from '../context/BankContext.jsx'; // Import BankProvider
+import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm';
+import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm';
+import DatosVentaForm from '../components/TabsContracts/DatosVentaForm';
+import DatosVehiculoUsadoForm from '../components/TabsContracts/DatosVehiculoUsadoForm';
+import FinanciamientoForm from '../components/TabsContracts/FinanciamientoForm';
+import PaquetesMantenimientoForm from '../components/TabsContracts/PaquetesMantenimientoForm';
+import ResumenForm from '../components/TabsContracts/ResumenForm';
+import { VehicleNewProvider } from '../context/VehicleNewContext';
+import { SellerProvider } from '../context/SellerContext';
+import { ItemProvider } from '../context/ItemContext';
+import { BankProvider } from '../context/BankContext';
 
 const ViewLoadVehicleContract = ({ setCurrentView }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
-    numeroContrato: '',
-    clienteFacturacion: '',
-    tipoIdentificacion: '', // Física o Jurídica
-    clientePropietario: '',
-    vendedor: '',
-    fechaDocumento: '',
-    opciones: '',
-    datosVehiculo: {
-      unidad: '',
-      marca: '',
-      estilo: '',
-      modelo: '',
-      color: '',
-      transmision: '',
-      numeroMotor: '',
-      numeroChasis: '',
-      precio: '',
-      bono: '',
-      porcentajeDescuento: '',
-      gastosLocales: '',
-      otrosGastos: '',
-    },
-    datosVehiculoUsado: {
-      unidad: '',
-      marca: '',
-      estilo: '',
-      modelo: '',
-      color: '',
-      transmision: '',
-      numeroMotor: '',
-      numeroChasis: '',
-      kilometraje: '',
-      fechaRevisionTecnica: '',
-      valorRecibido: '',
-    },
-    datosVenta: {
-      precioVenta: '',
-      gastosInscripcion: 1000,
-      tipoGastoInscripcion: '',
-      porcentajeDescuento: '',
-      montoDescuento: '',
-      montoPrima: '',
-      montoVehiculoUsado: '',
-      deudaUsado: '',
-      totalVenta: '',
-    },
-    financiamiento: {
-      entidad: '',
-      monto: '',
-      interes: '',
-      plazo: '',
-    },
-    paquetesMantenimiento: [],
+    DocNum: 5885,
+    U_Estado: 1,
+    Tipo: 1,
+    CodCliFactura: "C00007",
+    NombCliFactura: "BERROCARL JIMENEZ , RODRIGO ALONSO",
+    CodCliVehiculo: "C00007",
+    NombCliVehiculo: "BERROCARL JIMENEZ , RODRIGO ALONSO",
+    CodVendedor: "177",
+    NombVendedor: "SILVIA CARBALLO MONTERO",
+    Fecha: "2025-02-13T00:00:00",
+    Moneda: "COL",
+    Opciones: '',
+    PrecioLista: 50000.0,
+    PrecioVenta: 50000.0,
+    Total: 51000.0,
+    Prima_Contado: 40000.0,
+    MonUsado: 5000.0,
+    DeudasUsado: 0.0,
+    Descuento: 0.0,
+    TotAntImpuesto: 50000.0,
+    Impuestos: 1000.0,
+    TotalC_Imp: 5000.0,
+    EnteFinaciero: "Banco BAC - San José",
+    MotoFinanciar: 10000.0,
+    Otros: 0.0,
+    otrosGastosInscripcion: [
+      { monto: 0.0 },
+      { monto: 0.0 },
+      { monto: 0.0 },
+    ],
+    vehiculoUsadoxContrato: [
+      {
+        unidad: 'BFG-680',
+        marca: 'JAC',
+        vin: 'LJ16AK230E4400078',
+        anio: '2014',
+        placa: 'BFG-680',
+        color: '',
+        tipo: 'Vehiculos Usados',
+        precioRecibo: 5000.0,
+        transmision: 'MANUAL',
+        modelo: '',
+        combustible: 'GASOLINA',
+      },
+    ],
+    vehiculoxContrato: [
+      {
+        unidad: 'SA002345',
+        marca: 'CHERY',
+        modelo: '',
+        ano: 2025,
+        placa: '',
+        color: 'Gris/Techo Negro',
+        vin: 'LURMCVBYXSA002345',
+        transmision: 'AUTOMATICA',
+        precio: 50000.0,
+        tipo: null,
+        combustible: null,
+      },
+    ],
+    listaGatoAdicional: [
+      { itemCode: '', itemName: '', precioUnid: 0.0, tipoItem: 0 },
+      { itemCode: 'A1-PMP - 100K - TIGGO 2 MAN', itemName: 'PMP - 100K - TIGGO 2 MAN', precioUnid: 0.0, tipoItem: 5 },
+      { itemCode: 'A2-PMP - 100K - TIGGO 2 MAN', itemName: 'PMP - 100K - TIGGO 2 MAN', precioUnid: 366.0, tipoItem: 5 },
+      { itemCode: 'ACC-102', itemName: 'JUEGO DE LLANTA AT PARA i CAR03', precioUnid: 1977.5, tipoItem: 7 },
+    ],
   });
 
   const tabs = [
@@ -83,31 +95,36 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
 
   const validarSeccion = () => {
     switch (activeTab) {
-      case 0: // Información General
-        return (
+      case 0:
+        return true
+        /*return (
           formData.numeroContrato &&
           formData.clienteFacturacion &&
           formData.vendedor
-        );
-      case 1: // Datos del Vehículo
-        return (
+        );*/
+      case 1:
+        return true
+        /*return (
           formData.datosVehiculo.unidad &&
           formData.datosVehiculo.marca &&
           formData.datosVehiculo.modelo &&
           formData.datosVehiculo.precio
-        );
-      case 2: // Datos de Venta
-        return (
+        );*/
+      case 2:
+        return true
+        /*return (
           formData.datosVenta.precioVenta && formData.datosVenta.totalVenta
-        );
-      case 3: // Datos del Vehículo Usado
-        return (
+        );*/
+      case 3:
+        return true
+        /*return (
           formData.datosVehiculoUsado.unidad &&
           formData.datosVehiculoUsado.marca &&
           formData.datosVehiculoUsado.modelo
-        );
-      case 4: // Financiamiento
-        return !(formData.financiamiento.monto > formData.datosVehiculo.precio);
+        );*/
+      case 4:
+        return true
+        //return !(formData.financiamiento.monto > formData.datosVehiculo.precio);
       default:
         return true;
     }
@@ -116,8 +133,8 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   return (
     <VehicleNewProvider>
       <SellerProvider>
-        <ItemProvider> {/* Wrap with ItemProvider */}
-          <BankProvider> {/* Wrap with BankProvider */}
+        <ItemProvider>
+          <BankProvider>
             <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
               <div className="row">
                 <div className="col s12">
@@ -217,8 +234,8 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                 </button>
               </div>
             </div>
-          </BankProvider> {/* End BankProvider */}
-        </ItemProvider> {/* End ItemProvider */}
+          </BankProvider>
+        </ItemProvider>
       </SellerProvider>
     </VehicleNewProvider>
   );

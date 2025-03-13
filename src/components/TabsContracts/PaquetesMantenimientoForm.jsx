@@ -12,8 +12,8 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      paquetesMantenimiento: {
-        ...prevData.paquetesMantenimiento,
+      listaGatoAdicional: {
+        ...prevData.listaGatoAdicional,
         [name]: value,
       },
     }));
@@ -35,15 +35,15 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   const handleSelectItem = (item) => {
     setFormData((prevData) => ({
       ...prevData,
-      paquetesMantenimiento: [
-        ...prevData.paquetesMantenimiento,
+      listaGatoAdicional: [
+        ...prevData.listaGatoAdicional,
         {
           Tipo: item.Tipo,
           ItemCode: item.ItemCode,
           ItemName: item.ItemName,
-          Precio: item.Precio,
+          PrecioUnid: item.PrecioUnid,
           Cantidad: 1,
-          Total: item.Precio,
+          Total: item.PrecioUnid,
         },
       ],
     }));
@@ -51,20 +51,20 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   };
 
   const handleQuantityChange = (index, value) => {
-    const newPaquetesMantenimiento = [...formData.paquetesMantenimiento];
-    newPaquetesMantenimiento[index].Cantidad = value;
-    newPaquetesMantenimiento[index].Total = newPaquetesMantenimiento[index].Precio * value;
+    const newListaGatoAdicional = [...formData.listaGatoAdicional];
+    newListaGatoAdicional[index].Cantidad = value;
+    newListaGatoAdicional[index].Total = newListaGatoAdicional[index].PrecioUnid * value;
     setFormData((prevData) => ({
       ...prevData,
-      paquetesMantenimiento: newPaquetesMantenimiento,
+      listaGatoAdicional: newListaGatoAdicional,
     }));
   };
 
   const handleRemoveItem = (index) => {
-    const newPaquetesMantenimiento = formData.paquetesMantenimiento.filter((_, i) => i !== index);
+    const newListaGatoAdicional = formData.listaGatoAdicional.filter((_, i) => i !== index);
     setFormData((prevData) => ({
       ...prevData,
-      paquetesMantenimiento: newPaquetesMantenimiento,
+      listaGatoAdicional: newListaGatoAdicional,
     }));
   };
 
@@ -120,12 +120,12 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {formData.paquetesMantenimiento.map((item, index) => (
+                  {formData.listaGatoAdicional.map((item, index) => (
                     <tr key={index}>
-                      <td>{item.Tipo}</td>
-                      <td>{item.ItemCode}</td>
-                      <td>{item.ItemName}</td>
-                      <td>{item.Precio}</td>
+                      <td>{item.tipoItem}</td>
+                      <td>{item.itemCode}</td>
+                      <td>{item.itemName}</td>
+                      <td>{item.precioUnid}</td>
                       <td>
                         <input
                           type="number"

@@ -6,10 +6,7 @@ const DatosVentaForm = ({ formData, setFormData }) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      datosVenta: {
-        ...prevData.datosVenta,
-        [name]: value,
-      },
+      [name]: value,
     }));
   };
 
@@ -26,40 +23,40 @@ const DatosVentaForm = ({ formData, setFormData }) => {
             <div className="card-content">
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_PreLis" id="U_PreLis" />
-                  <label htmlFor="U_PreLis">Precios de lista</label>
+                  <input type="number" name="PrecioLista" id="PrecioLista" value={formData.PrecioLista} onChange={handleChange} />
+                  <label htmlFor="PrecioLista">Precios de lista</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Pre_Vta" id="U_Pre_Vta" />
-                  <label htmlFor="U_Pre_Vta">Precio de Venta</label>
+                  <input type="number" name="PrecioVenta" id="PrecioVenta" value={formData.PrecioVenta} onChange={handleChange} />
+                  <label htmlFor="PrecioVenta">Precio de Venta</label>
                 </div>
               </div>
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Otros_L" id="U_Otros_L" />
-                  <label htmlFor="U_Otros_L">Otros</label>
+                  <input type="number" name="Otros" id="Otros" value={formData.Otros} onChange={handleChange} />
+                  <label htmlFor="Otros">Otros</label>
                 </div>
                 <div className="col s12  m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Nota_Cre" id="U_Nota_Cre" />
-                  <label htmlFor="U_Nota_Cre">Descuento</label>
+                  <input type="number" name="Descuento" id="Descuento" value={formData.Descuento} onChange={handleChange} />
+                  <label htmlFor="Descuento">Descuento</label>
                 </div>
               </div>
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_AntImp" id="U_AntImp" />
-                  <label htmlFor="U_AntImp">Subtotal</label>
+                  <input type="number" name="TotAntImpuesto" id="TotAntImpuesto" value={formData.TotAntImpuesto} onChange={handleChange} />
+                  <label htmlFor="TotAntImpuesto">Subtotal</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Pre_Imp" id="U_Pre_Imp" />
-                  <label htmlFor="U_Pre_Imp">Impuestos</label>
+                  <input type="number" name="Impuestos" id="Impuestos" value={formData.Impuestos} onChange={handleChange} />
+                  <label htmlFor="Impuestos">Impuestos</label>
                 </div>
               </div>
               <div className="divider"></div>
 
               <div className="row">
                 <div className="col s12 m6 offset-m6 l4 offset-l6 input-field">
-                  <input type="number" name="U_DocTotal" id="U_DocTotal" />
-                  <label htmlFor="U_DocTotal">TOTAL</label>
+                  <input type="number" name="Total" id="Total" value={formData.Total} onChange={handleChange} />
+                  <label htmlFor="Total">TOTAL</label>
                 </div>
               </div>
 
@@ -72,32 +69,32 @@ const DatosVentaForm = ({ formData, setFormData }) => {
             <div className="card-content">
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Deposito" id="U_Deposito" />
-                  <label htmlFor="U_Deposito">Prima / Contado</label>
+                  <input type="number" name="Prima_Contado" id="Prima_Contado" value={formData.Prima_Contado} onChange={handleChange} />
+                  <label htmlFor="Prima_Contado">Prima / Contado</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Mon_Usa" id="U_Mon_Usa" />
-                  <label htmlFor="U_Mon_Usa">Usado</label>
+                  <input type="number" name="MonUsado" id="MonUsado" value={formData.MonUsado} onChange={handleChange} />
+                  <label htmlFor="MonUsado">Usado</label>
                 </div>
               </div>
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_TotalCImpuest" id="U_TotalCImpuest" />
-                  <label htmlFor="U_TotalCImpuest">Total C/Imp.</label>
+                  <input type="number" name="TotalC_Imp" id="TotalC_Imp" value={formData.TotalC_Imp} onChange={handleChange} />
+                  <label htmlFor="TotalC_Imp">Total C/Imp.</label>
                 </div>
                 <div className="col s12  m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_Deu_Usa" id="U_Deu_Usa" />
-                  <label htmlFor="U_Deu_Usa">Deudas Usado</label>
+                  <input type="number" name="DeudasUsado" id="DeudasUsado" value={formData.DeudasUsado} onChange={handleChange} />
+                  <label htmlFor="DeudasUsado">Deudas Usado</label>
                 </div>
               </div>
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="U_FinanciaT" id="U_FinanciaT" />
-                  <label htmlFor="U_FinanciaT">Financiamiento</label>
+                  <input type="number" name="MotoFinanciar" id="MotoFinanciar" value={formData.MotoFinanciar} onChange={handleChange} />
+                  <label htmlFor="MotoFinanciar">Financiamiento</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="pago_c_ent" id="pago_c_ent" />
-                  <label htmlFor="pago_c_ent">Pago Contra Ent.</label>
+                  <input type="number" name="PagoContraEnt" id="PagoContraEnt" value={formData.PagoContraEnt} onChange={handleChange} />
+                  <label htmlFor="PagoContraEnt">Pago Contra Ent.</label>
                 </div>
               </div>
             </div>
