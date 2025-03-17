@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from './AuthContext';
 import { getClientList } from '../services/client.service';
 
-const clientContext = createContext();
+const clientContext = createContext(null);
 export const useClient = () => {
   const context = useContext(clientContext);
   return context;

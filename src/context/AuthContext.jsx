@@ -11,7 +11,7 @@ import {
 import { app } from '../firebase/firebase.js';
 import { getById, getReference } from '../services/firestore.service';
 
-const authContext = createContext();
+const authContext = createContext(null);
 const auth = getAuth(app);
 export const useAuth = () => {
   const context = useContext(authContext);
@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     getConfig();
   }, [user]);
+  // @ts-ignore
   AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
   };

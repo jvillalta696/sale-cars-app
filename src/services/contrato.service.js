@@ -1,0 +1,36 @@
+import axios from 'axios';
+import { getToken } from './service';
+
+export const getContratoList = async (config, db) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.get(
+      `${config.URI}/ContratoVentas/listarcontrato?CodeBD=${db}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+export const getContratoById = async (config, db, contratoId) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.get(
+      `${config.URI}/ContratoVentas/contrato?CodeBD=${db}&Contrato=${contratoId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.Contrato;
+  } catch (error) {
+    throw error.message;
+  }
+};

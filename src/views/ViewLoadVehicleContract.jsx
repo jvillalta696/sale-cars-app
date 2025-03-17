@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './tabs.css'
 import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm';
 import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm';
@@ -11,84 +11,30 @@ import { VehicleNewProvider } from '../context/VehicleNewContext';
 import { SellerProvider } from '../context/SellerContext';
 import { ItemProvider } from '../context/ItemContext';
 import { BankProvider } from '../context/BankContext';
+import { ContractProvider } from '../context/ContractContext';
+import { contratoModel } from '../models/ContratoModel';
+import ListContractModal from '../components/ListContractModal';
+import { getContratoById } from '../services/contrato.service';
+import { useAuth } from '../context/AuthContext';
+
+/**
+ * @typedef {import('../models/ContratoModel').ContratoModel} ContratoModel
+ */
 
 const ViewLoadVehicleContract = ({ setCurrentView }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  const [formData, setFormData] = useState({
-    DocNum: 5885,
-    U_Estado: 1,
-    Tipo: 1,
-    CodCliFactura: "C00007",
-    NombCliFactura: "BERROCARL JIMENEZ , RODRIGO ALONSO",
-    CodCliVehiculo: "C00007",
-    NombCliVehiculo: "BERROCARL JIMENEZ , RODRIGO ALONSO",
-    CodVendedor: "177",
-    NombVendedor: "SILVIA CARBALLO MONTERO",
-    Fecha: "2025-02-13T00:00:00",
-    Moneda: "COL",
-    Opciones: '',
-    PrecioLista: 50000.0,
-    PrecioVenta: 50000.0,
-    Total: 51000.0,
-    Prima_Contado: 40000.0,
-    MonUsado: 5000.0,
-    DeudasUsado: 0.0,
-    Descuento: 0.0,
-    TotAntImpuesto: 50000.0,
-    Impuestos: 1000.0,
-    TotalC_Imp: 5000.0,
-    EnteFinaciero: "Banco BAC - San José",
-    MotoFinanciar: 10000.0,
-    Otros: 0.0,
-    otrosGastosInscripcion: [
-      { monto: 0.0 },
-      { monto: 0.0 },
-      { monto: 0.0 },
-    ],
-    vehiculoUsadoxContrato: [
-      {
-        unidad: 'BFG-680',
-        marca: 'JAC',
-        vin: 'LJ16AK230E4400078',
-        anio: '2014',
-        placa: 'BFG-680',
-        color: '',
-        tipo: 'Vehiculos Usados',
-        precioRecibo: 5000.0,
-        transmision: 'MANUAL',
-        modelo: '',
-        combustible: 'GASOLINA',
-      },
-    ],
-    vehiculoxContrato: [
-      {
-        unidad: 'SA002345',
-        marca: 'CHERY',
-        modelo: '',
-        ano: 2025,
-        placa: '',
-        color: 'Gris/Techo Negro',
-        vin: 'LURMCVBYXSA002345',
-        transmision: 'AUTOMATICA',
-        precio: 50000.0,
-        tipo: null,
-        combustible: null,
-      },
-    ],
-    listaGatoAdicional: [
-      { itemCode: '', itemName: '', precioUnid: 0.0, tipoItem: 0 },
-      { itemCode: 'A1-PMP - 100K - TIGGO 2 MAN', itemName: 'PMP - 100K - TIGGO 2 MAN', precioUnid: 0.0, tipoItem: 5 },
-      { itemCode: 'A2-PMP - 100K - TIGGO 2 MAN', itemName: 'PMP - 100K - TIGGO 2 MAN', precioUnid: 366.0, tipoItem: 5 },
-      { itemCode: 'ACC-102', itemName: 'JUEGO DE LLANTA AT PARA i CAR03', precioUnid: 1977.5, tipoItem: 7 },
-    ],
-  });
 
+  const { apiConfig, currentCompany } = useAuth();
+  const [activeTab, setActiveTab] = useState(0);
+  const [formData, setFormData] = useState(/** @type {ContratoModel} */(contratoModel));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const searchInputRef = useRef(null);
   const tabs = [
     'Información General',
     'Datos del Vehículo',
-    'Datos de Venta',
     'Datos del Vehículo Usado',
     'Financiamiento',
+    'Datos de Venta',
     'Paquetes de Mantenimiento',
     'Resumen',
   ];
@@ -96,148 +42,176 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   const validarSeccion = () => {
     switch (activeTab) {
       case 0:
-        return true
-        /*return (
-          formData.numeroContrato &&
-          formData.clienteFacturacion &&
-          formData.vendedor
-        );*/
+        return true;
       case 1:
-        return true
-        /*return (
-          formData.datosVehiculo.unidad &&
-          formData.datosVehiculo.marca &&
-          formData.datosVehiculo.modelo &&
-          formData.datosVehiculo.precio
-        );*/
+        return true;
       case 2:
-        return true
-        /*return (
-          formData.datosVenta.precioVenta && formData.datosVenta.totalVenta
-        );*/
+        return true;
       case 3:
-        return true
-        /*return (
-          formData.datosVehiculoUsado.unidad &&
-          formData.datosVehiculoUsado.marca &&
-          formData.datosVehiculoUsado.modelo
-        );*/
+        return true;
       case 4:
-        return true
-        //return !(formData.financiamiento.monto > formData.datosVehiculo.precio);
+        return true;
       default:
         return true;
     }
   };
 
-  return (
-    <VehicleNewProvider>
-      <SellerProvider>
-        <ItemProvider>
-          <BankProvider>
-            <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
-              <div className="row">
-                <div className="col s12">
-                  <h4 className="center">Contratos</h4>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col s12 m2 input-field" hidden={!formData.numeroContrato}>
-                  <input
-                    type="text"
-                    id="numeroContrato"
-                    name="numeroContrato"
-                    disabled
-                    value={formData.numeroContrato}
-                  />
-                  <label htmlFor="numeroContrato">Número de Contrato</label>
-                </div>
-                <div className={`col s12 ${!formData.numeroContrato ? 'm6 offset-m3' : 'm6 offset-m1'}`}>
-                  <nav>
-                    <div className="nav-wrapper teal">
-                      <form>
-                        <div className="input-field">
-                          <input id="search" type="search" required placeholder='Buscas Contrato por Numero o Nombre de Cliente' />
-                          <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                          <i className="material-icons">close</i>
-                        </div>
-                      </form>
-                    </div>
-                  </nav>
-                </div>
-              </div>
-              <ul className="tabs">
-                {tabs.map((tab, index) => (
-                  <li
-                    key={index}
-                    className={`tab ${activeTab === index ? 'active' : ''}`}
-                    onClick={() => setActiveTab(index)}
-                  >
-                    <a href="#!">{tab}</a>
-                  </li>
-                ))}
-              </ul>
+  const handleSelectContract = async (contract) => {
+    try {
+      const contractData = await getContratoById(apiConfig, currentCompany.code, contract.DocNum);
+      console.log('Contrato seleccionado:', contractData);
+      setFormData(contractData);
+    } catch (error) {
+      console.error('Error loading contract:', error);
+    }
 
-              <div className="section">
+  };
+
+  useEffect(() => {
+
+  }, []);
+  return (
+    <ContractProvider>
+      <VehicleNewProvider>
+        <SellerProvider>
+          <ItemProvider>
+            <BankProvider>
+              <div className="container white z-depth-2" style={{ minHeight: '83vh' }}>
                 <div className="row">
                   <div className="col s12">
-                    <h5 className='center'>{tabs[activeTab]}</h5>
+                    <h4 className="center">Contratos</h4>
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col s12 m2 input-field" hidden={!formData.DocNum}>
+                    <input
+                      type="text"
+                      id="numeroContrato"
+                      name="numeroContrato"
+                      disabled
+                      value={formData.DocNum || ''}
+                    />
+                    <label htmlFor="numeroContrato">Número de Contrato</label>
+                  </div>
+                  <div className={`col s12 ${!formData.DocNum ? 'm6 offset-m3' : 'm6 offset-m1'}`}>
+                    <nav>
+                      <div className="nav-wrapper teal">
+                        <form>
+                          <div className="input-field">
+                            <input id="search" type="search"
+                              required
+                              value={searchTerm}
+                              placeholder='Buscas Contrato por Numero o Nombre de Cliente'
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              ref={searchInputRef}
+                            />
+                            <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                            <i className="material-icons" onClick={() => setSearchTerm('')}>close</i>
+                          </div>
+                        </form>
+                      </div>
+                    </nav>
+                  </div>
+                  <div className="col s12 m1 input-field">
+                    <button
+                      className="btn right"
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        const instance = M.Modal.init(document.getElementById('list-contract-model'),
+                          {
+                            onCloseEnd: () => {
+                              if (searchInputRef.current) {
+                                searchInputRef.current.value = ''; // Limpia el valor del campo de búsqueda usando la referencia
+                                setSearchTerm(''); // Limpia el estado de búsqueda
+                              }
+                              M.updateTextFields();
+                              setIsModalOpen(false);
+                            }
+                          });
+                        instance.open();
+                      }}>
+                      <i className="material-icons">search</i>
+                    </button>
+                  </div>
+                </div>
+                <ul className="tabs">
+                  {tabs.map((tab, index) => (
+                    <li
+                      key={index}
+                      className={`tab ${activeTab === index ? 'active' : ''}`}
+                      onClick={() => setActiveTab(index)}
+                    >
+                      <a href="#!">{tab}</a>
+                    </li>
+                  ))}
+                </ul>
 
-                {activeTab === 0 && (
-                  <InformacionGeneralForm
-                    formData={formData}
-                    setFormData={setFormData}
-                    setCurrentView={setCurrentView}
-                  />
-                )}
-                {activeTab === 1 && (
-                  <DatosVehiculoForm formData={formData} setFormData={setFormData} />
-                )}
-                {activeTab === 2 && (
-                  <DatosVentaForm formData={formData} setFormData={setFormData} />
-                )}
-                {activeTab === 3 && (
-                  <DatosVehiculoUsadoForm
-                    formData={formData}
-                    setFormData={setFormData}
-                  />
-                )}
-                {activeTab === 4 && (
-                  <FinanciamientoForm formData={formData} setFormData={setFormData} />
-                )}
-                {activeTab === 5 && (
-                  <PaquetesMantenimientoForm
-                    formData={formData}
-                    setFormData={setFormData}
-                  />
-                )}
-                {activeTab === 6 && <ResumenForm formData={formData} />}
-              </div>
-              <div className="divider"></div>
-              <div className="section">
+                <div className="section">
+                  <div className="row">
+                    <div className="col s12">
+                      <h5 className='center'>{tabs[activeTab]}</h5>
+                    </div>
+                  </div>
 
-                <button
-                  className="btn"
-                  disabled={activeTab === 0}
-                  onClick={() => setActiveTab(activeTab - 1)}
-                >
-                  Anterior
-                </button>
-                <button
-                  className="btn right"
-                  disabled={activeTab === tabs.length - 1 || !validarSeccion()}
-                  onClick={() => setActiveTab(activeTab + 1)}
-                >
-                  Siguiente
-                </button>
+                  {activeTab === 0 && (
+                    <InformacionGeneralForm
+                      formData={formData}
+                      setFormData={setFormData}
+                      setCurrentView={setCurrentView}
+                    />
+                  )}
+                  {activeTab === 1 && (
+                    <DatosVehiculoForm formData={formData.ListVehiculoxContrato[0]} setFormData={setFormData} />
+                  )}
+                  {activeTab === 2 && (
+                    <DatosVehiculoUsadoForm
+                      formData={formData.ListVehiculoUsadoxContrato[0]}
+                      setFormData={setFormData}
+                    />
+                  )}
+                  {activeTab === 3 && (
+                    <FinanciamientoForm formData={formData} setFormData={setFormData} />
+                  )}
+                  {activeTab === 4 && (
+                    <DatosVentaForm formData={formData} setFormData={setFormData} />
+                  )}
+                  {activeTab === 5 && (
+                    <PaquetesMantenimientoForm
+                      formData={formData}
+                      setFormData={setFormData}
+                    />
+                  )}
+                  {activeTab === 6 && <ResumenForm formData={formData} />}
+                </div>
+                <div className="divider"></div>
+                <div className="section">
+
+                  <button
+                    className="btn"
+                    disabled={activeTab === 0}
+                    onClick={() => setActiveTab(activeTab - 1)}
+                  >
+                    Anterior
+                  </button>
+                  <button
+                    className="btn right"
+                    disabled={activeTab === tabs.length - 1 || !validarSeccion()}
+                    onClick={() => setActiveTab(activeTab + 1)}
+                  >
+                    Siguiente
+                  </button>
+                </div>
               </div>
-            </div>
-          </BankProvider>
-        </ItemProvider>
-      </SellerProvider>
-    </VehicleNewProvider>
+              <ListContractModal
+                isModalOpen={isModalOpen}
+                onSelectContract={handleSelectContract}
+                dataSearch={searchTerm}
+                onSetDataSearch={setSearchTerm} />
+            </BankProvider>
+          </ItemProvider>
+        </SellerProvider>
+      </VehicleNewProvider>
+    </ContractProvider>
   );
 };
 

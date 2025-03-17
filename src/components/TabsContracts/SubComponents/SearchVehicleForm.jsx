@@ -3,7 +3,6 @@ import M from 'materialize-css';
 import { useVehicle } from '../../../context/VehicleNewContext';
 import { getVehicleSaleData } from '../../../services/vehicule.service';
 import { useAuth } from '../../../context/AuthContext';
-import { use } from 'react';
 
 const SearchVehicleForm = ({  setVehicleData }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -23,7 +22,7 @@ const SearchVehicleForm = ({  setVehicleData }) => {
   useEffect(() => {
     if (selectedBrand) {
       const filteredModels = vehicles.filter(item => item.Marca === selectedBrand).map(item => item.Modelo);
-      setModels([...new Set(filteredModels)]);
+      setModels(Array.from(new Set(filteredModels)));
       setSelectedModel('');
       setColors([]);
     } else {
@@ -36,7 +35,7 @@ const SearchVehicleForm = ({  setVehicleData }) => {
   useEffect(() => {
     if (selectedModel) {
       const filteredColors = vehicles.filter(item => item.Marca === selectedBrand && item.Modelo === selectedModel).map(item => item.Color);
-      setColors([...new Set(filteredColors)]);
+      setColors(Array.from(new Set(filteredColors)));
     } else {
       setColors([]);
     }
@@ -72,7 +71,9 @@ const SearchVehicleForm = ({  setVehicleData }) => {
           <i className="material-icons prefix">directions_car</i>
           <select name='marca' id='marca' value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
             <option value="" disabled selected>Seleccione una marca</option>
-            {[...new Set(vehicles.map(item => item.Marca))].map((brand, index) => (
+            {[...
+// @ts-ignore
+            new Set(vehicles.map(item => item.Marca))].map((brand, index) => (
               <option key={index} value={brand}>{brand}</option>
             ))}
           </select>

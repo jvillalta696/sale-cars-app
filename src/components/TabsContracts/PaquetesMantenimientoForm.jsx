@@ -8,17 +8,6 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      listaGatoAdicional: {
-        ...prevData.listaGatoAdicional,
-        [name]: value,
-      },
-    }));
-  };
-
   const handleSearch = () => {
     if (searchTerm.length > 2) {
       const results = items.filter(item =>
@@ -33,17 +22,17 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   };
 
   const handleSelectItem = (item) => {
+    console.log('Item seleccionado:', item);
     setFormData((prevData) => ({
       ...prevData,
-      listaGatoAdicional: [
-        ...prevData.listaGatoAdicional,
+      ListaGatoAdicional: [
+        ...prevData.ListaGatoAdicional,
         {
-          Tipo: item.Tipo,
+          TipoItem: item.Tipo,
           ItemCode: item.ItemCode,
           ItemName: item.ItemName,
-          PrecioUnid: item.PrecioUnid,
-          Cantidad: 1,
-          Total: item.PrecioUnid,
+          PrecioUnid: item.PrecioUnid || item.Precio,
+          Cantidad: 1,         
         },
       ],
     }));
@@ -51,20 +40,19 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   };
 
   const handleQuantityChange = (index, value) => {
-    const newListaGatoAdicional = [...formData.listaGatoAdicional];
-    newListaGatoAdicional[index].Cantidad = value;
-    newListaGatoAdicional[index].Total = newListaGatoAdicional[index].PrecioUnid * value;
+    const newListaGatoAdicional = [...formData.ListaGatoAdicional];
+    newListaGatoAdicional[index].Cantidad = value;  
     setFormData((prevData) => ({
       ...prevData,
-      listaGatoAdicional: newListaGatoAdicional,
+      ListaGatoAdicional: newListaGatoAdicional,
     }));
   };
 
   const handleRemoveItem = (index) => {
-    const newListaGatoAdicional = formData.listaGatoAdicional.filter((_, i) => i !== index);
+    const newListaGatoAdicional = formData.ListaGatoAdicional.filter((_, i) => i !== index);
     setFormData((prevData) => ({
       ...prevData,
-      listaGatoAdicional: newListaGatoAdicional,
+      ListaGatoAdicional: newListaGatoAdicional,
     }));
   };
 
@@ -120,12 +108,12 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {formData.listaGatoAdicional.map((item, index) => (
+                  {formData.ListaGatoAdicional.length > 0 ? formData.ListaGatoAdicional.map((item, index) => (
                     <tr key={index}>
-                      <td>{item.tipoItem}</td>
-                      <td>{item.itemCode}</td>
-                      <td>{item.itemName}</td>
-                      <td>{item.precioUnid}</td>
+                      <td>{item.TipoItem}</td>
+                      <td>{item.ItemCode}</td>
+                      <td>{item.ItemName}</td>
+                      <td>{item.PrecioUnid}</td>
                       <td>
                         <input
                           type="number"
@@ -133,14 +121,14 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
                           onChange={(e) => handleQuantityChange(index, e.target.value)}
                         />
                       </td>
-                      <td>{item.Total}</td>
+                      <td>{item.PrecioUnid * item.Cantidad}</td>
                       <td>
                         <a className="btn-floating btn-large waves-effect waves-light red" onClick={() => handleRemoveItem(index)}>
                           <i className="material-icons">remove</i>
                         </a>
                       </td>
                     </tr>
-                  ))}
+                  )): <p>No hay datos a mostrar</p>}
                 </tbody>
               </table>
             </div>

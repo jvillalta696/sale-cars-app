@@ -35,7 +35,7 @@ const ListItems = ({ searchTerm, setSearchTerm, filteredItems, onSelectItem,hand
             <tbody>
               {filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
-                  <tr key={item.ItemCode} onClick={() => onSelectItem(item)}>
+                  <tr key={item.ItemCode} onClick={() => onSelectItem({...item, Cantidad: 1})}>
                     <td>{item.ItemCode}</td>
                     <td>{item.ItemName}</td>
                     <td>{item.Precio}</td>
@@ -43,7 +43,9 @@ const ListItems = ({ searchTerm, setSearchTerm, filteredItems, onSelectItem,hand
                 ))
               ) : (
                 <tr>
-                  <td colSpan="3">No hay artículos</td>
+                  <td 
+// @ts-ignore
+                  colSpan="3">No hay artículos</td>
                 </tr>
               )}
             </tbody>

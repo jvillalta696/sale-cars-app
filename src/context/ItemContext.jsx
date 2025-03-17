@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from './AuthContext';
 import { getItemList } from '../services/item.service';
 
-const itemContext = createContext();
+const itemContext = createContext(null);
 export const useItem = () => {
   const context = useContext(itemContext);
   return context;
@@ -39,7 +39,9 @@ export const ItemProvider = ({ children }) => {
   }, [apiConfig, currentCompany]);
 
   return (
-    <itemContext.Provider value={{ items, loading, fetchItems }}>
+    <itemContext.Provider 
+// @ts-ignore
+    value={{ items, loading, fetchItems }}>
       {children}
     </itemContext.Provider>
   );
