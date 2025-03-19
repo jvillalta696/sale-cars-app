@@ -33,7 +33,24 @@ const DatosVentaForm = ({ formData, setFormData }) => {
               </div>
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="Otros" id="Otros" value={formData.Otros} onChange={handleChange} />
+                  <input 
+                    type="number" 
+                    name="Otros" 
+                    id="Otros" 
+                    value={formData.ListOtrosGastosInscripcion[0]?.Monto || ''} 
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFormData((prevData) => {
+                        const updatedList = [...prevData.ListOtrosGastosInscripcion];
+                        if (updatedList.length > 0) {
+                          updatedList[0] = { ...updatedList[0], Monto: value };
+                        }
+                        return {
+                          ...prevData,
+                          ListOtrosGastosInscripcion: updatedList,
+                        };
+                      });
+                    }} />
                   <label htmlFor="Otros">Otros</label>
                 </div>
                 <div className="col s12  m6 l4 offset-l1 input-field">

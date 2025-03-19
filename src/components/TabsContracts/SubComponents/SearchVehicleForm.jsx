@@ -4,7 +4,7 @@ import { useVehicle } from '../../../context/VehicleNewContext';
 import { getVehicleSaleData } from '../../../services/vehicule.service';
 import { useAuth } from '../../../context/AuthContext';
 
-const SearchVehicleForm = ({  setVehicleData }) => {
+const SearchVehicleForm = ({  setVehicleData, setIsLoading}) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
@@ -48,6 +48,7 @@ const SearchVehicleForm = ({  setVehicleData }) => {
   }, [models, colors]);
 
   const handleSearch = async () => {
+    setIsLoading(true);
     try {
       setVehicleData(null);
       const vehicleData = await getVehicleSaleData(apiConfig, currentCompany.code, selectedBrand, selectedModel, selectedColor);
@@ -60,6 +61,10 @@ const SearchVehicleForm = ({  setVehicleData }) => {
     } catch (error) {
       console.error(error);
       setVehicleData(null);
+    }
+    finally
+    {
+      setIsLoading(false);
     }
   };
 

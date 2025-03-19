@@ -4,13 +4,13 @@ import ListVehiclesUsedsModel from '../ListVehiclesUsedsModel';
 import { getUsedVehicleData } from '../../services/vehicule.service';
 import { useAuth } from '../../context/AuthContext';
 
-const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
+const DatosVehiculoUsadoForm = ({ formData, setFormData,setIsLoading }) => {
   const [loading, setLoading] = useState(false);
   const [vehicleData, setVehicleData] = useState(formData);
   const { currentCompany, apiConfig } = useAuth();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    /*const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       vehiculoUsadoxContrato: [
@@ -19,28 +19,34 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData }) => {
           [name]: value,
         }
       ]
-    }));
+    }));*/
   };
 
   const handleSelectVehicle = async (vehicle) => {
     setLoading(true);
+    setLoading(true);
     try {
       const data = await getUsedVehicleData(apiConfig, currentCompany.code, vehicle.Unidad);
       setVehicleData(data);
-      setFormData((prevData) => ({
-        ...prevData,
-        vehiculoUsadoxContrato: [data],
-      }));
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     M.updateTextFields();
   }, [formData]);
+
+  useEffect(() => {
+      if (vehicleData) {
+        setFormData(vehicleData);
+        }       
+      console.log('VehicleData:', vehicleData);
+    }, [vehicleData]);
+  
 
   return (
     <>

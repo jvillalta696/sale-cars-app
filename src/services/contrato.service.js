@@ -34,3 +34,21 @@ export const getContratoById = async (config, db, contratoId) => {
     throw error.message;
   }
 };
+
+export const createContrato = async (config, db, contrato) => {
+  try {
+    const token = await getToken(config);
+    const response = await axios.post(
+      `${config.URI}/ContratoVentas/crearcontrato?CodeBD=${db}`,
+      contrato,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.message;
+  }
+}

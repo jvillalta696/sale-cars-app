@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import React, { useState } from 'react';
 import views from '../views';
 import GlobalCompanySelect from '../components/GlobalCompanySelect';
+import { ContractProvider } from '../context/ContractContext';
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState('Welcome');
@@ -23,7 +24,9 @@ const Dashboard = () => {
           <GlobalCompanySelect />
         </div>
       </div>
-      {renderView()}
+      <ContractProvider>
+        {renderView()}
+      </ContractProvider>
     </div>
   );
 };

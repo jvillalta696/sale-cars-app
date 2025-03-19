@@ -67,7 +67,9 @@ const ListVehiclesUsedsModel = ({ onSelectVehicle }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="2">No hay vehículos usados</td>
+                  <td 
+// @ts-ignore
+                  colSpan="2">No hay vehículos usados</td>
                 </tr>
               )}
             </tbody>

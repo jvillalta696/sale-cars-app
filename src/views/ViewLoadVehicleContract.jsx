@@ -11,24 +11,26 @@ import { VehicleNewProvider } from '../context/VehicleNewContext';
 import { SellerProvider } from '../context/SellerContext';
 import { ItemProvider } from '../context/ItemContext';
 import { BankProvider } from '../context/BankContext';
-import { ContractProvider } from '../context/ContractContext';
 import { contratoModel } from '../models/ContratoModel';
 import ListContractModal from '../components/ListContractModal';
-import { getContratoById } from '../services/contrato.service';
+import { getContratoById,createContrato } from '../services/contrato.service';
 import { useAuth } from '../context/AuthContext';
+import FixedActionButton from '../components/TabsContracts/SubComponents/FixedActionButton';
+import { useContract } from '../context/ContractContext';
 
 /**
  * @typedef {import('../models/ContratoModel').ContratoModel} ContratoModel
  */
 
 const ViewLoadVehicleContract = ({ setCurrentView }) => {
-
+   const { fetchContracts } = useContract();
   const { apiConfig, currentCompany } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState(/** @type {ContratoModel} */(contratoModel));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
   const tabs = [
     'Información General',
     'Datos del Vehículo',
@@ -67,11 +69,33 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
 
   };
 
+  const handleCreateContract = async () => {
+    console.log('Creando contrato:', formData);
+    setIsLoading(true);
+    try {
+      const response = await createContrato(apiConfig, currentCompany.code, formData);
+      if (response.Estado === 'Err') {       
+        throw new Error('Error al crear contrato: '+response.MsgError);
+      }
+      setFormData((prevData) => ({
+        ...prevData,
+        DocNum: response.DocNum,
+      }));
+      await fetchContracts();
+      M.toast({ html: 'Contrato creado correctamente', classes: 'green' });
+      console.log('Contrato creado:', response);
+    } catch (error) {
+      M.toast({ html: error.message, classes: 'red' });
+      console.error('Error creating contract:', error);
+    }finally{
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
 
   }, []);
   return (
-    <ContractProvider>
       <VehicleNewProvider>
         <SellerProvider>
           <ItemProvider>
@@ -145,7 +169,13 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                     </li>
                   ))}
                 </ul>
-
+                {
+                  isLoading && (
+                    <div className="progress">
+                      <div className="indeterminate"></div>
+                    </div>
+                  )
+                }
                 <div className="section">
                   <div className="row">
                     <div className="col s12">
@@ -161,12 +191,29 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                     />
                   )}
                   {activeTab === 1 && (
-                    <DatosVehiculoForm formData={formData.ListVehiculoxContrato[0]} setFormData={setFormData} />
+                    <DatosVehiculoForm 
+                      formData={formData.ListVehiculoxContrato[0]} 
+                      setFormData={(updatedData) =>
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          ListVehiculoxContrato: [
+                            { ...prevData.ListVehiculoxContrato[0], ...updatedData },
+                          ],
+                        }))}
+                       setIsLoading={setIsLoading} data={formData}/>
                   )}
                   {activeTab === 2 && (
                     <DatosVehiculoUsadoForm
-                      formData={formData.ListVehiculoUsadoxContrato[0]}
-                      setFormData={setFormData}
+                      formData={formData.ListVehiculoUsadoxContrato[0] || {}}
+                      setFormData={(updatedData) =>
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          ListVehiculoUsadoxContrato: [
+                            { ...prevData.ListVehiculoUsadoxContrato[0], ...updatedData },
+                          ],
+                        }))
+                      }
+                      setIsLoading={setIsLoading}
                     />
                   )}
                   {activeTab === 3 && (
@@ -202,6 +249,7 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                   </button>
                 </div>
               </div>
+              <FixedActionButton onCreate={handleCreateContract} DocNum={formData.DocNum}/>
               <ListContractModal
                 isModalOpen={isModalOpen}
                 onSelectContract={handleSelectContract}
@@ -211,7 +259,6 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
           </ItemProvider>
         </SellerProvider>
       </VehicleNewProvider>
-    </ContractProvider>
   );
 };
 

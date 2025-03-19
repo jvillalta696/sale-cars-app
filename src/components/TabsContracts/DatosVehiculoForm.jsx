@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
 import SearchVehicleForm from './SubComponents/SearchVehicleForm.jsx';
 
-const DatosVehiculoForm = ({ formData, setFormData}) => {
+const DatosVehiculoForm = ({ formData, setFormData ,setIsLoading, data}) => {
   const [vehicleData, setVehicleData] = useState(formData|| null);
 
   useEffect(() => {
@@ -14,17 +14,15 @@ const DatosVehiculoForm = ({ formData, setFormData}) => {
   useEffect(() => {
     if (vehicleData) {
       console.log(vehicleData);
-      setFormData((prevData) => ({
-        ...prevData,
-        vehiculoxContrato: [vehicleData],
-      }));
-    }
-    console.log('FormData:', vehicleData);
+      setFormData(vehicleData);
+      }       
+    console.log('VehicleData:', vehicleData);
+    console.log('Data:', data);
   }, [vehicleData]);
 
   return (
     <>
-      <SearchVehicleForm setVehicleData={setVehicleData} />
+      <SearchVehicleForm setVehicleData={setVehicleData} setIsLoading={setIsLoading} />
       {!vehicleData? <p>No hay datos a mostrar</p> :
         <div className="card" style={{ padding: 20, margin: 20 }}>
           <div className="row">
