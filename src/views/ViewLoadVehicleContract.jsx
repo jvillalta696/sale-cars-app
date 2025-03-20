@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, act } from 'react';
 import './tabs.css'
 import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm';
 import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm';
@@ -162,8 +162,12 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                   {tabs.map((tab, index) => (
                     <li
                       key={index}
-                      className={`tab ${activeTab === index ? 'active' : ''}`}
-                      onClick={() => setActiveTab(index)}
+                      className={`tab ${activeTab === index ? 'active' : ''} ${!validarSeccion() && activeTab + 1 === index ? 'disabled' : ''}`}
+                      onClick={() => {
+                        if (index === activeTab || (index === activeTab + 1 && validarSeccion()) || index < activeTab) {
+                          setActiveTab(index);
+                        }
+                      }}
                     >
                       <a href="#!">{tab}</a>
                     </li>
@@ -249,7 +253,14 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                   </button>
                 </div>
               </div>
-              <FixedActionButton onCreate={handleCreateContract} DocNum={formData.DocNum}/>
+              <FixedActionButton 
+              onCreate={handleCreateContract} 
+              data={formData}
+              activeTab={activeTab}
+              tabs={tabs}
+              validarSeccion={validarSeccion}
+              setActiveTab={setActiveTab}
+              />
               <ListContractModal
                 isModalOpen={isModalOpen}
                 onSelectContract={handleSelectContract}

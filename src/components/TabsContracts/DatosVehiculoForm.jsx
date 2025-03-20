@@ -12,12 +12,9 @@ const DatosVehiculoForm = ({ formData, setFormData ,setIsLoading, data}) => {
   }, [formData, vehicleData]);
 
   useEffect(() => {
-    if (vehicleData) {
-      console.log(vehicleData);
+    if (vehicleData) {      
       setFormData(vehicleData);
-      }       
-    console.log('VehicleData:', vehicleData);
-    console.log('Data:', data);
+      }
   }, [vehicleData]);
 
   return (

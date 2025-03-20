@@ -15,6 +15,7 @@ const Login = () => {
       await signIn(usr.email, usr.password);
       navigate('/'); // Redirect to dashboard
     } catch (error) {
+      // @ts-ignore
       alert('Usuario incorrecto ', error.message);
     }
   };

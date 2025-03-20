@@ -9,19 +9,6 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData,setIsLoading }) => {
   const [vehicleData, setVehicleData] = useState(formData);
   const { currentCompany, apiConfig } = useAuth();
 
-  const handleChange = (e) => {
-    /*const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      vehiculoUsadoxContrato: [
-        {
-          ...prevData.vehiculoUsadoxContrato[0],
-          [name]: value,
-        }
-      ]
-    }));*/
-  };
-
   const handleSelectVehicle = async (vehicle) => {
     setLoading(true);
     setLoading(true);
@@ -43,8 +30,7 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData,setIsLoading }) => {
   useEffect(() => {
       if (vehicleData) {
         setFormData(vehicleData);
-        }       
-      console.log('VehicleData:', vehicleData);
+        }
     }, [vehicleData]);
   
 
@@ -63,7 +49,7 @@ const DatosVehiculoUsadoForm = ({ formData, setFormData,setIsLoading }) => {
             <div className="row">
               <div className="col s12 m6 offset-m6 input-field">
                 <i className='material-icons prefix'>price_change</i>
-                <input type="number" name='precioRecibo' value={vehicleData?.PrecioRecibo || ''} onChange={handleChange} />
+                <input type="number" name='precioRecibo' value={vehicleData?.PrecioRecibo || ''} onChange={(e) => setVehicleData({ ...vehicleData, PrecioRecibo: e.target.value })} />
                 <label htmlFor="precioRecibo">Precio</label>
               </div>
             </div>

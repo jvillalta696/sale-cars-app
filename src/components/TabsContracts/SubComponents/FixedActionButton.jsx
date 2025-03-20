@@ -1,45 +1,61 @@
-import React, { useEffect } from 'react';
-
-const FixedActionButton = ({ onCreate, DocNum }) => {
+import React, { act, useEffect } from 'react';
+import PropTypes from 'prop-types';
+const FixedActionButton = ({ onCreate, data, activeTab, tabs, validarSeccion, setActiveTab }) => {
     useEffect(() => {
         const tooltips = document.querySelectorAll('.tooltipped');
         M.Tooltip.init(tooltips);
         const elems = document.querySelectorAll('.fixed-action-btn');
-        console.log(DocNum);
         M.FloatingActionButton.init(elems,/*{
             toolbarEnabled: true
         }*/);
     }, []);
+    
     return (
         <div className="fixed-action-btn ">
             <a className="btn-floating btn-large teal">
                 <i className="large material-icons">menu</i>
             </a>
             <ul>
-                {
-                    DocNum === null || DocNum === undefined && (<li>
+                {!data.DocNum && (
+                    <li>
                         <a className="btn-floating teal tooltipped"
                             data-position="left"
                             data-tooltip="Crear"
                             onClick={onCreate}>
                             <i className="material-icons">save</i>
                         </a>
-                    </li>)
-                }
-
+                    </li>
+                )}
                 <li>
-                    <a className="btn-floating cyan dark tooltipped" data-position="left" data-tooltip="Atras">
+                    <a
+                        className={activeTab === 0 ? "btn-floating cyan dark tooltipped disabled" : "btn-floating cyan dark tooltipped"}
+                        data-position="left"
+                        data-tooltip="Atras"
+                        onClick={activeTab === 0 ? undefined : () => setActiveTab(activeTab - 1)}>
                         <i className="material-icons ">arrow_back</i>
                     </a>
                 </li>
                 <li>
-                    <a className="btn-floating cyan tooltipped" data-position="left" data-tooltip="Siguiente">
+                    <a
+                        className={activeTab === tabs.length - 1 || !validarSeccion() ? "btn-floating cyan dark tooltipped disabled" : "btn-floating cyan dark tooltipped"}
+                        data-position="left"
+                        data-tooltip="Siguiente"
+                        onClick={activeTab === tabs.length - 1 || !validarSeccion()  ? undefined : () => setActiveTab(activeTab + 1)}>
                         <i className="material-icons">arrow_forward</i>
                     </a>
                 </li>
             </ul>
         </div>
     );
+};
+
+FixedActionButton.propTypes = {
+    onCreate: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    activeTab: PropTypes.number.isRequired, // Cambiado de bool a number
+    tabs: PropTypes.array.isRequired,
+    validarSeccion: PropTypes.func.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
 };
 
 export default FixedActionButton;

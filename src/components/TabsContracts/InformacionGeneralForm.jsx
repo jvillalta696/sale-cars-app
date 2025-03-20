@@ -59,6 +59,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       ...prevData,
       CodVendedor: seller.SlpCode,
       NombVendedor: seller.SlpName,
+      CodTitular: seller.SlpCode,
+      NombTitular: seller.SlpName,
     }));
   };
 

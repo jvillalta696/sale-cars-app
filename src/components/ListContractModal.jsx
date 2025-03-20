@@ -9,7 +9,6 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
   const [filteredContracts, setFilteredContracts] = useState([]);
 
   const handleSearch = () => {
-    console.log('searchTerm:', searchTerm);
     if (searchTerm.length > 3) {
       const filtered = contracts.ListaContratos.filter(contract =>
         contract.NombreCliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -111,7 +110,7 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
 };
 
 ListContractModal.propTypes = {  
-  ismodalOpen: PropTypes.bool.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
   onSelectContract: PropTypes.func.isRequired,
   dataSearch: PropTypes.string.isRequired,
   onSetDataSearch: PropTypes.func.isRequired,
