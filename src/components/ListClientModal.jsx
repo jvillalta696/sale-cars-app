@@ -9,7 +9,11 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
     const { clients, loading } = useClient();
 
     useEffect(() => {
-        M.Modal.init(document.querySelectorAll('.modal'));
+        M.Modal.init(document.querySelectorAll('.modal'),{
+            onCloseEnd: () => {
+                handleCloseModal();
+            }
+        });
     }, []);
 
     const handleSearch = (e) => {
@@ -43,9 +47,17 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
         setSearchTerm('');
     };
 
+    
     return (
         <div id="list-client-modal" className="modal">
-            <div className="modal-content">
+            { loading ? (
+                <div className="modal-content">
+                    <div className="progress">
+                        <div className="indeterminate"></div>
+                    </div>
+                </div>
+            ) : (
+                <div className="modal-content">
                 <h4>Buscar Cliente</h4>
                 <div className="row">
                     <div className="col s12 m9 input-field">
@@ -71,7 +83,7 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredClients.map((client) => (
+                            {filteredClients.length>0&&filteredClients.map((client,index) => (
                                 <tr key={client.CardCode} onClick={() => handleSelectClient(client)}>
                                     <td>{client.CardCode}</td>
                                     <td>{client.CardName}</td>
@@ -81,6 +93,7 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
                     </table>
                 </div>
             </div>
+            )}
             <div className="modal-footer">
                 <button className="btn-flat" onClick={onAddClient}>Agregar Cliente</button>
                 <button className="modal-close btn-flat" onClick={handleCloseModal}>Cerrar</button>

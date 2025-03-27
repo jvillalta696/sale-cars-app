@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
 import ListClientModal from '../ListClientModal';
 import ListSellersModal from '../ListSellersModal';
+import useCurrentDate from '../../hooks/useCurrentDate.js';
 
 const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
   const [type, setType] = useState(null);
+  const currentDate = useCurrentDate();
+  const [monedaCliente, setMonedaCliente] = useState('##');
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -12,6 +15,7 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       [name]: value,
     }));
   };
+
 
   useEffect(() => {
     // Initialize Materialize CSS select and character counter
@@ -42,7 +46,9 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
         ...prevData,
         CodCliFactura: client.CardCode,
         NombCliFactura: client.CardName,
+        //Tipo: client.Tipo === 'F' ? 2 : client.Tipo === 'J' ? 1 : 0,     
       }));
+      setMonedaCliente(client.Moneda);
     }
     if (client.type === 'CV') {
       setFormData((prevData) => ({
@@ -68,6 +74,7 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
     setCurrentView('Clientes');
     M.Modal.getInstance(document.getElementById('list-client-modal')).close();
   };
+
 
   return (
     <div className="card" style={{ padding: '20px', margin: '20px' }}>
@@ -110,7 +117,7 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
       <div className="row">
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>event</i>
-          <input type="date" name="Fecha" id="Fecha" value={formData.Fecha.split('T')[0]} onChange={handleChange} />
+          <input type="date" name="Fecha" id="Fecha" value={formData.Fecha===""?currentDate:formData.Fecha.split('T')[0]} onChange={handleChange} />
           <label htmlFor="Fecha" className="active">Fecha de Documento</label>
         </div>
         <div className="col s12 m4 input-field">
@@ -127,8 +134,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
           <i className='material-icons prefix'>attach_money</i>
           <select name="Moneda" id="Moneda" value={formData.Moneda} onChange={handleChange}>
             <option value="" disabled>Seleccione una moneda</option>
-            <option value="USD">Dolares</option>
-            <option value="COL">Colones</option>
+            <option value="USD" disabled={monedaCliente==='COL'}>Dolares</option>
+            <option value="COL"disabled={monedaCliente==='USD'}>Colones</option>
           </select>
         </div>
       </div>

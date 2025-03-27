@@ -17,7 +17,7 @@ import { getContratoById,createContrato } from '../services/contrato.service';
 import { useAuth } from '../context/AuthContext';
 import FixedActionButton from '../components/TabsContracts/SubComponents/FixedActionButton';
 import { useContract } from '../context/ContractContext';
-
+import useCurrentDate from '../hooks/useCurrentDate.js';
 /**
  * @typedef {import('../models/ContratoModel').ContratoModel} ContratoModel
  */
@@ -31,6 +31,7 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const currentDate = useCurrentDate();
   const tabs = [
     'Información General',
     'Datos del Vehículo',
@@ -68,12 +69,20 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
     }
 
   };
-
-  const handleCreateContract = async () => {
+  useEffect(() => {
+    if(formData.Fecha === ''){
+      console.log('Fecha:',currentDate);
+      setFormData((prevData) => ({
+        ...prevData,
+        Fecha: currentDate,
+      }));
+    }
+  }, [formData]);
+  const handleCreateContract = async () => {   
     console.log('Creando contrato:', formData);
     setIsLoading(true);
     try {
-      const response = await createContrato(apiConfig, currentCompany.code, formData);
+     /* const response = await createContrato(apiConfig, currentCompany.code, formData);
       if (response.Estado === 'Err') {       
         throw new Error('Error al crear contrato: '+response.MsgError);
       }
@@ -83,7 +92,7 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
       }));
       await fetchContracts();
       M.toast({ html: 'Contrato creado correctamente', classes: 'green' });
-      console.log('Contrato creado:', response);
+      console.log('Contrato creado:', response);*/
     } catch (error) {
       M.toast({ html: error.message, classes: 'red' });
       console.error('Error creating contract:', error);
@@ -91,10 +100,6 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-
-  }, []);
   return (
       <VehicleNewProvider>
         <SellerProvider>

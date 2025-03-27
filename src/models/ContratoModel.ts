@@ -80,7 +80,7 @@ export const contratoModel: ContratoModel = {
     NombCliFactura: "",
     Tipo: 1,
     Opciones: "",
-    Fecha: new Date().toISOString(),
+    Fecha: "",
     CodCliVehiculo: "",
     NombCliVehiculo: "",
     Moneda: "COL",

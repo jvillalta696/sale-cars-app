@@ -86,9 +86,9 @@ const SearchBar = ({ onSelectClient, onIsFound }) => {
                   overflowY: 'auto',
                 }}
               >
-                {filteredClients.map((client) => (
+                {filteredClients.map((client,index) => (
                   <a
-                    key={client.CardCode}
+                    key={index}
                     className="collection-item"
                     onClick={() => handleSelectClient(client)}
                   >
