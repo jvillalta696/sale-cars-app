@@ -1,37 +1,79 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getUser } from "../services/auth.service";
-import { getById } from "../services/firestore.service";
+import { getUser, updateUser, createUser } from "../services/auth.service";
+import { getById, getReferenceById, update, insert } from "../services/firestore.service";
 import M from "materialize-css";
 
 const UserForm = ({ userId, onClose }) => {
     const [userData, setUserData] = useState(null);
     const [userConfig, setUserConfig] = useState(null);
+    const [environment, setEnvironment] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const user = await getUser(userId);
-                setUserData(user.data);
+                if (userId) {
+                    const user = await getUser(userId);
+                    setUserData(user.data);
 
-                const userConfigDoc = await getById("usuarios", userId);
-                setUserConfig(userConfigDoc.data());
+                    const userConfigDoc = await getById("usuarios", userId);
+                    const userConfigData = userConfigDoc.data();
+                    setUserConfig(userConfigData);
+
+                    if (userConfigData.config) {
+                        const configId = userConfigData.config.id;
+                        setEnvironment(userConfigData.config.id);
+                    }
+                } else {
+                    setUserData({ email: "", displayName: "" });
+                    setUserConfig({user:"", rol: "USR", companyList: [] });
+                }
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
         };
 
         fetchUserData();
+        console.log(userData, userConfig, environment);
     }, [userId]);
 
     useEffect(() => {
-        M.updateTextFields(); // Initialize MaterializeCSS text fields
+        M.updateTextFields();
     }, [userData, userConfig]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here
         console.log("User data submitted:", { userData, userConfig });
+    };
+
+    const handleSave = async () => {
+        try {
+            if (userId) {
+                await updateUser(userId, { displayName: userData.displayName });
+                const updatedConfig = {
+                    ...userConfig,
+                    config: environment ? await getReferenceById("config", environment) : null,
+                };
+                await update("usuarios", updatedConfig, userId);
+                console.log("User and configuration updated successfully.");
+            } else {
+                const newUser = await createUser({
+                    email: userData.email,
+                    displayName: userData.displayName,
+                    password: userData.password,
+                });
+                const newConfig = {
+                    ...userConfig,
+                    config: environment ? await getReferenceById("config", environment) : null,
+                };
+                await insert("usuarios", newConfig, newUser.uid);
+                console.log("User and configuration created successfully.");
+            }
+            onClose();
+        } catch (error) {
+            console.error("Error saving user:", error);
+        }
     };
 
     const handleCompanySelection = (companyCode) => {
@@ -45,7 +87,6 @@ const UserForm = ({ userId, onClose }) => {
         console.log("Updated company list:", updatedCompanyList);
     };
 
-    // Define the list of companies
     const companies = [
         { code: "01", name: "Coricar" },
         { code: "02", name: "GrandMotors" },
@@ -61,36 +102,61 @@ const UserForm = ({ userId, onClose }) => {
             <div className="row">
                 <div className="col s6 input-field">
                     <input
-                        name="email"
-                        id="email"
+                        name="formemail"
+                        id="formemail"
                         placeholder="Email"
                         type="email"
+                        autoComplete="off"
                         value={userData.email}
-                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                        disabled={userData.uid}
+                        onChange={(e) => {
+                            setUserData({ ...userData, email: e.target.value });
+                            setUserConfig({ ...userConfig, email: e.target.value });
+                        }}
                     />
-                    <label htmlFor="email">
-                        Email:
-                    </label>
+                    <label htmlFor="formemail">Email:</label>
                 </div>
                 <div className="col s6 input-field">
                     <input
-                        name="user"
-                        id="user"
+                        name="formuser"
+                        id="formuser"
                         type="text"
+                        autoComplete="off"
                         value={userData.displayName}
-                        onChange={(e) => setUserData({ ...userData, user: e.target.value })}
+                        onChange={(e) => {
+                            setUserData({ ...userData, displayName: e.target.value });
+                            setUserConfig({ ...userConfig, user: e.target.value });
+                        }}
                     />
-                    <label htmlFor="user">
-                        User Name:
-                    </label>
+                    <label htmlFor="formuser">Nombre Usuario:</label>
                 </div>
-
             </div>
+            {!userId && (
+                <div className="row">
+                    <div className="col s6 input-field">
+                        <input
+                            name="formpassword"
+                            id="formpassword"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            autoComplete="off"
+                            value={userData.password || ""}
+                            onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+                        />
+                        <label htmlFor="formpassword">Password:</label>
+                        <span
+                            className="material-icons"
+                            style={{ cursor: "pointer", position: "absolute", right: "10px", top: "10px" }}
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? "visibility_off" : "visibility"}
+                        </span>
+                    </div>
+                </div>
+            )}
             <div className="row">
-                <div className="col s6">
-                    <label htmlFor="rol">
-                        Role:
-                    </label>
+                <div className="col s12 m3">
+                    <label htmlFor="rol">Role:</label>
                     <select
                         className="browser-default"
                         name="rol"
@@ -101,9 +167,21 @@ const UserForm = ({ userId, onClose }) => {
                         <option value="USR">USR</option>
                         <option value="ADM">ADM</option>
                     </select>
-
                 </div>
-                <div className="col s6">
+                <div className="col s12 m3">
+                    <label htmlFor="env">Ambiente</label>
+                    <select
+                        name="env"
+                        id="env"
+                        className="browser-default"
+                        value={environment}
+                        onChange={(e) => setEnvironment(e.target.value)}
+                    >
+                        <option value="API_TEST">Pruebas</option>
+                        <option value="API_PROD">Productivo</option>
+                    </select>
+                </div>
+                <div className="col s12 m3">
                     <label>Company List:</label>
                     {companies.map((company) => (
                         <p key={company.code}>
@@ -120,7 +198,9 @@ const UserForm = ({ userId, onClose }) => {
                     ))}
                 </div>
             </div>
-            <button type="submit" className="btn">Save</button>
+            <button type="button" className="btn" onClick={handleSave}>
+                {userId ? "Actualizar" : "Guardar"}
+            </button>
             <button type="button" className="btn red" onClick={onClose}>
                 Cancel
             </button>
@@ -129,7 +209,7 @@ const UserForm = ({ userId, onClose }) => {
 };
 
 UserForm.propTypes = {
-    userId: PropTypes.string.isRequired,
+    userId: PropTypes.string, // Made optional
     onClose: PropTypes.func.isRequired,
 };
 

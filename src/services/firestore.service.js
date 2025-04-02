@@ -19,6 +19,11 @@ export const getReference = (reference) => {
   return getDoc(reference);
 };
 
+export const getReferenceById = async (collectionName, id) => {
+  const docRef = doc(db, collectionName, id);
+  return docRef;
+};
+
 export const update = async (collectionName, data, id) => {
   const newDocRef = doc(db, collectionName, id);
   await updateDoc(newDocRef, data);

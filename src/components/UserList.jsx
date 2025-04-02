@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { getUsers, deleteUser } from '../services/auth.service';
 import M from 'materialize-css';
 
-const UserList = ({ onEditUser }) => {
+const UserList = ({ onEditUser, onCreateUser }) => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,6 +41,13 @@ const UserList = ({ onEditUser }) => {
   return (
     <div className="container">
       <h4 className="center">Lista de Usuarios</h4>
+      <button
+        className="btn green"
+        style={{ marginBottom: '20px' }}
+        onClick={() => onCreateUser(true)}
+      >
+        Crear Usuario
+      </button>
       {isLoading ? (
         <div className="progress">
           <div className="indeterminate"></div>
@@ -85,6 +92,7 @@ const UserList = ({ onEditUser }) => {
 
 UserList.propTypes = {
   onEditUser: PropTypes.func.isRequired,
+  onCreateUser: PropTypes.func.isRequired,
 };
 
 export default UserList;

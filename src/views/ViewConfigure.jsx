@@ -4,20 +4,29 @@ import UserForm from "../components/UserForm.jsx";
 
 const ViewConfigure = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
-
-  const handleEditUser = (userId) => {
-    setSelectedUserId(userId);
-  };
+  const [createUsr, setCreateUser] = useState(false);
 
   return (
     <div className="container">
       <div className="card">
         <div className="card-content">
           <span className="card-title">Configuración</span>
-          {selectedUserId ? (
-            <UserForm userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+          {selectedUserId || createUsr ? (
+            <UserForm
+              userId={selectedUserId}
+              onClose={() => {
+                setSelectedUserId(null);
+                setCreateUser(false);
+              }}
+            />
           ) : (
-            <UserList onEditUser={handleEditUser} />
+            <UserList
+              onEditUser={(userId) => {
+                setSelectedUserId(userId);
+                setCreateUser(false);
+              }}
+              onCreateUser={() => setCreateUser(true)}
+            />
           )}
         </div>
       </div>

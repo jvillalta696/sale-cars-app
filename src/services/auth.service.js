@@ -14,10 +14,10 @@ export const createUser = async (data) => {
     }
 };
 
-export const updateUser = async (data) => {
+export const updateUser = async (id,data) => {
     try {
-        const response = await axios.put(
-        `${config.URI}usuario/`,
+        const response = await axios.patch(
+        `${config.URI}usuario/${id}`,
         data
         );
         return response.data;
