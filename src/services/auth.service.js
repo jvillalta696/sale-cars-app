@@ -1,6 +1,6 @@
 import axios from 'axios';
 const config = {
-    URI: 'http://localhost:5103/api/',
+    URI: 'https://db.cloud.delserint.com:466/AuthFirebase/api/',
 };
 export const createUser = async (data) => {
     try {

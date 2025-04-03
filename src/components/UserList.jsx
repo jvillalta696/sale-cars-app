@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getUsers, deleteUser } from '../services/auth.service';
 import M from 'materialize-css';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const UserList = ({ onEditUser, onCreateUser }) => {
   const [users, setUsers] = useState([]);
+  const {user,config} = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUsers = async () => {
@@ -62,21 +64,23 @@ const UserList = ({ onEditUser, onCreateUser }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.uid}>
-                <td>{user.displayName}</td>
-                <td>{user.email}</td>
+            {users.map((usr) => (
+              <tr key={usr.uid}>
+                <td>{usr.displayName}</td>
+                <td>{usr.email}</td>
                 <td>
                   <button
+                    disabled={user.uid === usr.uid}
                     className="btn-small blue"
-                    onClick={() => handleEditClick(user.uid)}
+                    onClick={() => handleEditClick(usr.uid)}
                   >
                     Editar
                   </button>
                   <button
+                    disabled={user.uid === usr.uid}
                     className="btn-small red"
                     style={{ marginLeft: '10px' }}
-                    onClick={() => handleDelete(user.uid)}
+                    onClick={() => handleDelete(usr.uid)}
                   >
                     Eliminar
                   </button>

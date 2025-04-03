@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getUser, updateUser, createUser } from "../services/auth.service";
+import { getUser, updateUser, createUser,deleteUser } from "../services/auth.service";
 import { getById, getReferenceById, update, insert } from "../services/firestore.service";
 import M from "materialize-css";
+
 
 const UserForm = ({ userId, onClose }) => {
     const [userData, setUserData] = useState(null);
     const [userConfig, setUserConfig] = useState(null);
     const [environment, setEnvironment] = useState(null);
-    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
+            setIsLoading(true);
             try {
                 if (userId) {
                     const user = await getUser(userId);
@@ -28,9 +30,12 @@ const UserForm = ({ userId, onClose }) => {
                 } else {
                     setUserData({ email: "", displayName: "" });
                     setUserConfig({user:"", rol: "USR", companyList: [] });
+                    setEnvironment("API_TEST");
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
+            }finally {
+                setIsLoading(false);
             }
         };
 
@@ -48,7 +53,8 @@ const UserForm = ({ userId, onClose }) => {
     };
 
     const handleSave = async () => {
-        try {
+        setIsLoading(true);
+        try {            
             if (userId) {
                 await updateUser(userId, { displayName: userData.displayName });
                 const updatedConfig = {
@@ -67,12 +73,22 @@ const UserForm = ({ userId, onClose }) => {
                     ...userConfig,
                     config: environment ? await getReferenceById("config", environment) : null,
                 };
-                await insert("usuarios", newConfig, newUser.uid);
+                try {
+                    await insert("usuarios", newConfig, newUser.data.uid);
+                }
+                catch (error) {
+                    await deleteUser(newUser.data.uid);
+                    throw new Error("Error creating user configuration: " + error.message);
+                }
+                M.toast                
                 console.log("User and configuration created successfully.");
             }
             onClose();
         } catch (error) {
+            M.toast({ html: `Error saving user: ${error}`, classes: "red" });
             console.error("Error saving user:", error);
+        }finally {
+            setIsLoading(false);
         }
     };
 
@@ -99,6 +115,7 @@ const UserForm = ({ userId, onClose }) => {
     return (
         <form onSubmit={handleSubmit}>
             <h3>Edita Usuario</h3>
+            {isLoading && <div className="progress"><div className="indeterminate"></div></div>}
             <div className="row">
                 <div className="col s6 input-field">
                     <input
@@ -137,20 +154,12 @@ const UserForm = ({ userId, onClose }) => {
                         <input
                             name="formpassword"
                             id="formpassword"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            autoComplete="off"
+                            type="text"                            
+                            placeholder="Password"                            
                             value={userData.password || ""}
                             onChange={(e) => setUserData({ ...userData, password: e.target.value })}
                         />
-                        <label htmlFor="formpassword">Password:</label>
-                        <span
-                            className="material-icons"
-                            style={{ cursor: "pointer", position: "absolute", right: "10px", top: "10px" }}
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? "visibility_off" : "visibility"}
-                        </span>
+                        <label htmlFor="formpassword">Password:</label>                        
                     </div>
                 </div>
             )}
@@ -174,7 +183,7 @@ const UserForm = ({ userId, onClose }) => {
                         name="env"
                         id="env"
                         className="browser-default"
-                        value={environment}
+                        value={environment || "API_TEST"}
                         onChange={(e) => setEnvironment(e.target.value)}
                     >
                         <option value="API_TEST">Pruebas</option>
