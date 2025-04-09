@@ -9,23 +9,22 @@ const FixedActionButton = ({ onCreate, data, activeTab, tabs, validarSeccion, se
             toolbarEnabled: true
         }*/);
     }, []);
-    
+
     return (
         <div className="fixed-action-btn ">
             <a className="btn-floating btn-large teal">
                 <i className="large material-icons">menu</i>
             </a>
             <ul>
-                {!data.DocNum && (
-                    <li>
-                        <a className="btn-floating teal tooltipped"
-                            data-position="left"
-                            data-tooltip="Crear"
-                            onClick={onCreate}>
-                            <i className="material-icons">save</i>
-                        </a>
-                    </li>
-                )}
+                <li>
+                    <a className="btn-floating teal tooltipped"
+                        data-position="left"
+                        data-tooltip={data.DocNum ? "Actualizar" : "Crear"}
+                        onClick={onCreate}>
+                        <i className="material-icons">save</i>
+                    </a>
+                </li>
+
                 <li>
                     <a
                         className={activeTab === 0 ? "btn-floating cyan dark tooltipped disabled" : "btn-floating cyan dark tooltipped"}
@@ -40,7 +39,7 @@ const FixedActionButton = ({ onCreate, data, activeTab, tabs, validarSeccion, se
                         className={activeTab === tabs.length - 1 || !validarSeccion() ? "btn-floating cyan dark tooltipped disabled" : "btn-floating cyan dark tooltipped"}
                         data-position="left"
                         data-tooltip="Siguiente"
-                        onClick={activeTab === tabs.length - 1 || !validarSeccion()  ? undefined : () => setActiveTab(activeTab + 1)}>
+                        onClick={activeTab === tabs.length - 1 || !validarSeccion() ? undefined : () => setActiveTab(activeTab + 1)}>
                         <i className="material-icons">arrow_forward</i>
                     </a>
                 </li>

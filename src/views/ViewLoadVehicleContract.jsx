@@ -13,7 +13,7 @@ import { ItemProvider } from '../context/ItemContext';
 import { BankProvider } from '../context/BankContext';
 import { contratoModel } from '../models/ContratoModel';
 import ListContractModal from '../components/ListContractModal';
-import { getContratoById,createContrato } from '../services/contrato.service';
+import { getContratoById,createContrato, updateContrato } from '../services/contrato.service';
 import { useAuth } from '../context/AuthContext';
 import FixedActionButton from '../components/TabsContracts/SubComponents/FixedActionButton';
 import { useContract } from '../context/ContractContext';
@@ -78,24 +78,37 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
       }));
     }
   }, [formData]);
-  const handleCreateContract = async () => {   
-    console.log('Creando contrato:', formData);
+  const handleCreateContract = async () => {
     setIsLoading(true);
     try {
-     /* const response = await createContrato(apiConfig, currentCompany.code, formData);
-      if (response.Estado === 'Err') {       
-        throw new Error('Error al crear contrato: '+response.MsgError);
+      let response = null;
+      let action = '';
+      if (formData.DocNum===null){
+        action = 'crear'
+        console.log('Creando contrato');
+          response = await createContrato(apiConfig, currentCompany.code, formData);
+          setFormData((prevData) => ({
+            ...prevData,
+            DocNum: response.NumContrato
+            ,
+          }));
       }
-      setFormData((prevData) => ({
-        ...prevData,
-        DocNum: response.DocNum,
-      }));
+      else{
+        action = 'actualizar'
+        console.log('Actualizando contrato');
+        response = await updateContrato(apiConfig, currentCompany.code, formData);
+      }
+    
+      if (response.Estado === 'Err') {       
+        throw new Error(`Error al ${action} contrato: `+response.MsgError);
+      }
+      
       await fetchContracts();
-      M.toast({ html: 'Contrato creado correctamente', classes: 'green' });
-      console.log('Contrato creado:', response);*/
+      M.toast({ html: `Contrato ${action} correctamente`, classes: 'green' });
+      console.log('Contrato creado:', response);
     } catch (error) {
       M.toast({ html: error.message, classes: 'red' });
-      console.error('Error creating contract:', error);
+      console.error(`Error  creating or update:`, error);
     }finally{
       setIsLoading(false);
     }

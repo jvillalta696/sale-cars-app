@@ -52,3 +52,24 @@ export const createContrato = async (config, db, contrato) => {
     throw error.message;
   }
 }
+export const updateContrato = async (config, db, contracto) => {
+  try {
+    const token = await getToken(config);
+    console.log(token);
+    console.log(db);
+    console.log(contracto);
+    console.log(config.URI);
+    const response = await axios.patch (
+      `${config.URI}/ContratoVentas/actualizarcontrato?CodeBD=${db}&NumContratro=${contracto.DocNum}`,
+      contracto,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.message;
+  }
+}
