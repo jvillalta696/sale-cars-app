@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 
 const Navbar = ({ setCurrentView }) => {
-  const { signout } = useAuth();
+  const { signout, config } = useAuth();
 
   useEffect(() => {
     // Initialize Materialize CSS components
@@ -56,18 +56,13 @@ const Navbar = ({ setCurrentView }) => {
                 >
                   Vehiculos
                 </a>
-              </li>
-              <li>
-                <a href="#!" onClick={() => setCurrentView('ContractSales')}>
-                  Contratos
-                </a>
-              </li>
+              </li>             
               <li>
                 <a
                   href="#!"
                   onClick={() => setCurrentView('LoadVehicleContract')}
                 >
-                  Vehiculos/Contrato
+                  Contratos
                 </a>
               </li>
               <li>
@@ -78,11 +73,15 @@ const Navbar = ({ setCurrentView }) => {
                   Entregas
                 </a>
               </li>
-              <li>
-                <a href="#!" onClick={() => setCurrentView('Configure')}>
-                  Configuración
-                </a>
-              </li>
+              {
+                config && config.rol === 'ADM' && (
+                  <li>
+                    <a href="#!" onClick={() => setCurrentView('Configure')}>
+                      Configuración
+                    </a>
+                  </li>
+                )
+              }
               <li>
                 <a href="#!" onClick={handleSignOut}>
                   Salir
@@ -92,7 +91,7 @@ const Navbar = ({ setCurrentView }) => {
           </div>
         </nav>
       </div>
-      <Sidebar setCurrentView={setCurrentView} />
+      <Sidebar setCurrentView={setCurrentView} onSignOut={handleSignOut}/>
     </>
   );
 };
