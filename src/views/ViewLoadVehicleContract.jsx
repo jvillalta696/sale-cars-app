@@ -175,6 +175,16 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                       <i className="material-icons">search</i>
                     </button>
                   </div>
+                  <div className="col s12 m2 input-field" hidden={!formData.DocNum}>
+                    <a
+                      type="text"
+                      id="numeroContrato"
+                      className="btn right"
+                      href={`https://db.cloud.delserint.com:466/api/report/GetReport?CodeBD=${currentCompany.code}&DocNum=${formData.DocNum}&ReportName=ContratoVenta&Format=PDF`}
+                    >
+                      <i className="material-icons">picture_as_pdf</i>                      
+                    </a>
+                    </div>
                 </div>
                 <ul className="tabs">
                   {tabs.map((tab, index) => (
