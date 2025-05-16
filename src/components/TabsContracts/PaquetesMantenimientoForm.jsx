@@ -57,6 +57,13 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   };
 
   useEffect(() => {
+    if (!Array.isArray(formData.ListaGatoAdicional)) {
+      setFormData(prev => ({
+        ...prev,
+        ListaGatoAdicional: [],
+      }));
+    };
+
     M.updateTextFields();
     M.Modal.init(document.querySelectorAll('.modal'));
   }, []);
