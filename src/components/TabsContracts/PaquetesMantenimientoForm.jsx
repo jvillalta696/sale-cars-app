@@ -108,7 +108,7 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {formData.ListaGatoAdicional.length > 0 ? formData.ListaGatoAdicional.map((item, index) => (
+                  {Array.isArray(formData.ListaGatoAdicional) && formData.ListaGatoAdicional.length > 0 ? formData.ListaGatoAdicional.map((item, index) => (
                     <tr key={index}>
                       <td>{item.TipoItem}</td>
                       <td>{item.ItemCode}</td>
@@ -128,7 +128,7 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
                         </a>
                       </td>
                     </tr>
-                  )): <p>No hay datos a mostrar</p>}
+                  )): <p>No hay datos a mostrar</p> }
                 </tbody>
               </table>
             </div>
