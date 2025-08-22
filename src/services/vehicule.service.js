@@ -69,11 +69,11 @@ export const getVehiclesListUseds = async (config, db) => {
   }  
 };
 
-export const getVehicleSaleData = async (config, db, brand, model, color) => {
+export const getVehicleSaleData = async (config, db, brand, model, color, condicion) => {
   try {
     const token = await getToken(config);
     const response = await axios.get(
-      `${config.URI}/ContratoVentas/vehiventa?CodeBD=${db}&Marca=${brand}&Modelo=${model}&Color=${color}`,
+      `${config.URI}/ContratoVentas/vehiventa?CodeBD=${db}&Marca=${brand}&Modelo=${model}&Color=${color}&Condicion=${condicion}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
