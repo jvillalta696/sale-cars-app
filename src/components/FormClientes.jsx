@@ -187,7 +187,7 @@ const FormClientes = ({
             </div>
           </div>
           <div className="row">
-            <div className="col s12 m6 l12 input-field">
+            <div className="col s12 m6 l8 input-field">
               <input
                 type="text"
                 name="Address"
@@ -197,6 +197,18 @@ const FormClientes = ({
               />
               <label htmlFor="Address">Dirección</label>
             </div>
+            <div className="col s12 m6 l4 input-field">
+              <input
+                type="text"
+                name="EstCivil"
+                value={formData.EstCivil}
+                onChange={handleChange}
+                required
+              />
+              <label htmlFor="EstCivil">Estado Civil</label>
+            </div>
+          </div>
+          <div className="row">
             <div className="col s12 m6 l4 input-field">
               <input
                 type="text"
@@ -332,6 +344,7 @@ FormClientes.propTypes = {
     CardName: PropTypes.string.isRequired,
     GroupCode: PropTypes.any.isRequired,
     Address: PropTypes.string.isRequired,
+    EstCivil: PropTypes.string.isRequired,
     Phone1: PropTypes.string.isRequired,
     Phone2: PropTypes.string,
     Fax: PropTypes.string,
