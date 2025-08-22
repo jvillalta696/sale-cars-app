@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 
 const Navbar = ({ setCurrentView }) => {
-  const { signout, config } = useAuth();
+  const { signout, config, currentCompany } = useAuth();
 
   useEffect(() => {
     // Initialize Materialize CSS components
@@ -38,8 +38,28 @@ const Navbar = ({ setCurrentView }) => {
                 setCurrentView('Welcome');
               }}
             >
-              SaleCars
+             {currentCompany && currentCompany.code && (
+              <img
+                src={`https://db.cloud.delserint.com:466/api/imagen/${currentCompany.code}`}
+                alt={`Logo ${currentCompany.name || 'Company'}`}
+                style={{
+                  height: '56px', // Altura del navbar de Materialize
+                  maxWidth: '200px',
+                  objectFit: 'contain',
+                  marginLeft: '20px',
+                  verticalAlign: 'middle'
+                }}
+                onError={(e) => {
+                  // Si la imagen falla al cargar, ocultar el elemento
+                  const target = e.target;
+                  if (target instanceof HTMLImageElement) {
+                    target.style.display = 'none';
+                  }
+                }}
+              />
+            )} 
             </a>
+            
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">
               <i className="material-icons">menu</i>
             </a>
