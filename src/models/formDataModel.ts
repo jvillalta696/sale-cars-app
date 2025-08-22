@@ -5,6 +5,7 @@ export interface FormDataModel {
   CardCode: string;
   GroupCode: string;
   Address: string;
+  EstCivil: string;
   Phone1: string;
   Phone2: string;
   Fax: string;
@@ -21,6 +22,7 @@ const formDataModel: FormDataModel = {
   CardCode: '',
   GroupCode: '',
   Address: '',
+  EstCivil: '',
   Phone1: '',
   Phone2: '',
   Fax: '',
