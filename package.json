@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "preview": "vite preview",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "deploy": "npm run build && firebase deploy",
+    "deploy:hosting": "npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "axios": "^1.7.9",
