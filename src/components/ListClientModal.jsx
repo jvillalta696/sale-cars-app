@@ -12,6 +12,8 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
         M.Modal.init(document.querySelectorAll('.modal'),{
             onCloseEnd: () => {
                 handleCloseModal();
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
             }
         });
     }, []);
@@ -39,12 +41,17 @@ const ListClientModal = ({ onSelectClient, onAddClient, type,setType }) => {
         setType(null);
         M.Modal.getInstance(document.getElementById('list-client-modal')).close();
         M.updateTextFields();
+        // Restaurar scroll también al seleccionar
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     };
 
     const handleCloseModal = () => {
         setType(null);
         setFilteredClients([]);
         setSearchTerm('');
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
     };
 
     

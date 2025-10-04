@@ -9,7 +9,12 @@ const ListVehiclesUsedsModel = ({ onSelectVehicle }) => {
 
   useEffect(() => {
     M.updateTextFields();
-    M.Modal.init(document.querySelectorAll('.modal'));
+    M.Modal.init(document.querySelectorAll('.modal'), {
+      onCloseEnd: () => {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -31,6 +36,9 @@ const ListVehiclesUsedsModel = ({ onSelectVehicle }) => {
   const handleSelectVehicle = (vehicle) => {
     onSelectVehicle(vehicle);
     M.Modal.getInstance(document.getElementById('list-vehicle-modal')).close();
+    // Restaurar scroll también al seleccionar
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   };
 
   return (
@@ -77,7 +85,10 @@ const ListVehiclesUsedsModel = ({ onSelectVehicle }) => {
         </div>
       </div>
       <div className="modal-footer">
-        <button className="modal-close btn-flat">Cerrar</button>
+        <button className="modal-close btn-flat" onClick={() => {
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+        }}>Cerrar</button>
       </div>
     </div>
   );

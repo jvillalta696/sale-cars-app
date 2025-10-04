@@ -4,7 +4,12 @@ import M from 'materialize-css';
 const ListItems = ({ searchTerm, setSearchTerm, filteredItems, onSelectItem,handleSearch }) => {
   useEffect(() => {
     M.updateTextFields();
-    M.Modal.init(document.querySelectorAll('.modal'));
+    M.Modal.init(document.querySelectorAll('.modal'), {
+      onCloseEnd: () => {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+      }
+    });
   }, []);
 
   return (
@@ -53,7 +58,10 @@ const ListItems = ({ searchTerm, setSearchTerm, filteredItems, onSelectItem,hand
         </div>
       </div>
       <div className="modal-footer">
-        <button className="modal-close btn-flat">Cerrar</button>
+        <button className="modal-close btn-flat" onClick={() => {
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+        }}>Cerrar</button>
       </div>
     </div>
   );

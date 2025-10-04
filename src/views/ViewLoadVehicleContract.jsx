@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, act } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './tabs.css'
 import InformacionGeneralForm from '../components/TabsContracts/InformacionGeneralForm';
 import DatosVehiculoForm from '../components/TabsContracts/DatosVehiculoForm';
@@ -113,6 +113,13 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
       setIsLoading(false);
     }
   };
+
+  // Restaurar scroll al cambiar de tab
+  useEffect(() => {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, [activeTab]);
+
   return (
       <VehicleNewProvider>
         <SellerProvider>

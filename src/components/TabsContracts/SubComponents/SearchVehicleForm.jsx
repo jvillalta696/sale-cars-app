@@ -4,7 +4,7 @@ import { useVehicle } from '../../../context/VehicleNewContext';
 import { getVehicleSaleData } from '../../../services/vehicule.service';
 import { useAuth } from '../../../context/AuthContext';
 
-const SearchVehicleForm = ({  setVehicleData, setIsLoading}) => {
+const SearchVehicleForm = ({ onBuscarVehiculos, setIsLoading }) => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
@@ -14,7 +14,7 @@ const SearchVehicleForm = ({  setVehicleData, setIsLoading}) => {
   const [condiciones, setCondiciones] = useState([]);
   const { vehicles } = useVehicle();
   const [data, setData] = useState(null);
-  const { currentCompany,  apiConfig } = useAuth();
+  const { currentCompany, apiConfig } = useAuth();
 
   useEffect(() => {
     const elems = document.querySelectorAll('select');
@@ -71,12 +71,26 @@ const SearchVehicleForm = ({  setVehicleData, setIsLoading}) => {
     M.FormSelect.init(elems);
   }, [models, colors, condiciones]);
 
-  const handleSearch = async () => {
-    setIsLoading(true);
-    try {
-      setVehicleData(null);
-      const vehicleData = await getVehicleSaleData(apiConfig, currentCompany.code, selectedBrand, selectedModel, selectedColor, selectedCondicion);
-      setVehicleData(vehicleData);
+  const handleSearch = () => {
+    if (onBuscarVehiculos) {
+      onBuscarVehiculos(async () => {
+        setIsLoading(true);
+        try {
+          return await getVehicleSaleData(
+            apiConfig,
+            currentCompany.code,
+            selectedBrand,
+            selectedModel,
+            selectedColor,
+            selectedCondicion
+          );
+        } catch (error) {
+          console.error(error);
+          return [];
+        } finally {
+          setIsLoading(false);
+        }
+      });
       setSelectedBrand('');
       setSelectedModel('');
       setSelectedColor('');
@@ -84,13 +98,6 @@ const SearchVehicleForm = ({  setVehicleData, setIsLoading}) => {
       setModels([]);
       setColors([]);
       setCondiciones([]);
-    } catch (error) {
-      console.error(error);
-      setVehicleData(null);
-    }
-    finally
-    {
-      setIsLoading(false);
     }
   };
 

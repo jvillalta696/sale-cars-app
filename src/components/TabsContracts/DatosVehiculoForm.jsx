@@ -1,26 +1,81 @@
 import React, { useEffect, useState } from 'react';
 import M from 'materialize-css';
 import SearchVehicleForm from './SubComponents/SearchVehicleForm.jsx';
+import ModalListaVehiculos from './SubComponents/ModalListaVehiculos.jsx';
 
-const DatosVehiculoForm = ({ formData, setFormData ,setIsLoading, data}) => {
-  const [vehicleData, setVehicleData] = useState(formData|| null);
+const DatosVehiculoForm = ({ formData, setFormData, setIsLoading, data }) => {
+  const [vehicleData, setVehicleData] = useState(formData || null);
+  const [vehiculosList, setVehiculosList] = useState([]);
+  const [loadingVehiculos, setLoadingVehiculos] = useState(false);
 
   useEffect(() => {
     const elems = document.querySelectorAll('select');
     M.FormSelect.init(elems);
     M.updateTextFields();
+    // Inicializar el modal de vehículos
+    const modalElem = document.getElementById('modalVehiculos');
+    if (modalElem) M.Modal.init(modalElem);
   }, [formData, vehicleData]);
 
   useEffect(() => {
-    if (vehicleData) {      
+    if (vehicleData) {
       setFormData(vehicleData);
-      }
+    }
   }, [vehicleData]);
+
+  useEffect(() => {
+    document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    // Limpieza al desmontar: restaurar scroll global
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, []);
+
+  // Handler para abrir el modal desde el SearchVehicleForm
+  const handleOpenModalVehiculos = async (filters) => {
+    setLoadingVehiculos(true);
+    setVehiculosList([]);
+    const modalElem = document.getElementById('modalVehiculos');
+    if (modalElem) {
+      const instance = M.Modal.getInstance(modalElem) || M.Modal.init(modalElem);
+      instance.open();
+    }
+    // Buscar vehículos
+    try {
+      const vehiculos = await filters(); // filters es una función async que retorna la lista
+      setVehiculosList(vehiculos || []);
+    } catch (e) {
+      setVehiculosList([]);
+    } finally {
+      setLoadingVehiculos(false);
+    }
+  };
+
+  const handleSelectVehiculo = (vehiculo) => {
+    setVehicleData(vehiculo);
+    setVehiculosList([]);
+    const modalElem = document.getElementById('modalVehiculos');
+    if (modalElem) {
+      const instance = M.Modal.getInstance(modalElem);
+      instance && instance.close();
+    }
+  };
 
   return (
     <>
-      <SearchVehicleForm setVehicleData={setVehicleData} setIsLoading={setIsLoading} />
-      {!vehicleData? <p>No hay datos a mostrar</p> :
+      <SearchVehicleForm
+        onBuscarVehiculos={handleOpenModalVehiculos}
+        setIsLoading={setIsLoading}
+      />
+      <ModalListaVehiculos
+        vehiculos={vehiculosList}
+        loading={loadingVehiculos}
+        onSelect={handleSelectVehiculo}
+        onClose={() => setVehiculosList([])}
+      />
+      {!vehicleData ? <p>No hay datos a mostrar</p> :
         <div className="card" style={{ padding: 20, margin: 20 }}>
           <div className="row">
             <div className="col s12 m6 offset-m6 input-field">
