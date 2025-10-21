@@ -18,6 +18,7 @@ import { useAuth } from '../context/AuthContext';
 import FixedActionButton from '../components/TabsContracts/SubComponents/FixedActionButton';
 import { useContract } from '../context/ContractContext';
 import useCurrentDate from '../hooks/useCurrentDate.js';
+
 /**
  * @typedef {import('../models/ContratoModel').ContratoModel} ContratoModel
  */
@@ -187,7 +188,7 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
                       type="text"
                       id="numeroContrato"
                       className="btn right"
-                      href={`https://db.cloud.delserint.com:466/api/report/GetReport?CodeBD=${currentCompany.code}&DocNum=${formData.DocNum}&ReportName=ContratoVenta&Format=PDF`}
+                      href={`${apiConfig.URI}/report/GetReport?CodeBD=${currentCompany.code}&DocNum=${formData.DocNum}&ReportName=ContratoVenta&Format=PDF`}
                     >
                       <i className="material-icons">picture_as_pdf</i>                      
                     </a>

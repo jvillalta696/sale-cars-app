@@ -36,7 +36,9 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
         },
       ],
     }));
-    M.Modal.getInstance(document.getElementById('list-item-modal')).close();
+    M.Modal.getInstance(document.getElementById('list-item-modal')).close()
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   };
 
   const handleQuantityChange = (index, value) => {

@@ -91,7 +91,7 @@ const ViewFormClientes = () => {
         setFormData({ ...formDataModel });
       } catch (error) {
         M.toast({
-          html: `Error al crear el cliente ${formData.CardName}`,
+          html: `Error al crear el cliente ${formData.CardName} : ${error.message}`,
           classes: 'red',
         });
         console.log(error.message);

@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 
 const Navbar = ({ setCurrentView }) => {
-  const { signout, config, currentCompany } = useAuth();
+  const { signout, config, currentCompany, apiConfig } = useAuth();
 
   useEffect(() => {
     // Initialize Materialize CSS components
@@ -40,7 +40,7 @@ const Navbar = ({ setCurrentView }) => {
             >
              {currentCompany && currentCompany.code && (
               <img
-                src={`https://db.cloud.delserint.com:466/api/imagen/${currentCompany.code}`}
+                src={`${apiConfig.URI}/imagen/${currentCompany.code}`}
                 alt={`Logo ${currentCompany.name || 'Company'}`}
                 style={{
                   height: '56px', // Altura del navbar de Materialize
