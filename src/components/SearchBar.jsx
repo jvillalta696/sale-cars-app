@@ -27,7 +27,6 @@ const SearchBar = ({ onSelectClient, onIsFound }) => {
   };
 
   const handleSelectClient = async (client) => {
-    console.log(client);
     try {
       const clnt = await getClientByCode(
         apiConfig,

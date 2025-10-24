@@ -40,7 +40,6 @@ const UserForm = ({ userId, onClose }) => {
         };
 
         fetchUserData();
-        console.log(userData, userConfig, environment);
     }, [userId]);
 
     useEffect(() => {
@@ -49,7 +48,6 @@ const UserForm = ({ userId, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("User data submitted:", { userData, userConfig });
     };
 
     const handleSave = async () => {
@@ -100,7 +98,6 @@ const UserForm = ({ userId, onClose }) => {
                 { code: companyCode, name: companies.find((c) => c.code === companyCode).name },
             ];
         setUserConfig({ ...userConfig, companyList: updatedCompanyList });
-        console.log("Updated company list:", updatedCompanyList);
     };
 
     const companies = [

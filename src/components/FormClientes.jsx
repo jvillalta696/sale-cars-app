@@ -194,6 +194,7 @@ const FormClientes = ({
                 value={formData.Address}
                 onChange={handleChange}
                 required
+                maxLength={50}
               />
               <label htmlFor="Address">Dirección</label>
             </div>

@@ -134,8 +134,8 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
           <i className='material-icons prefix'>attach_money</i>
           <select name="Moneda" id="Moneda" value={formData.Moneda} onChange={handleChange}>
             <option value="" disabled>Seleccione una moneda</option>
-            <option value="USD" disabled={monedaCliente==='COL'}>Colones</option>
-            <option value="COL"disabled={monedaCliente==='USD'}>Dolares</option>
+            <option value="USD" disabled={monedaCliente==='COL'}>Dolares</option>
+            <option value="COL" disabled={monedaCliente==='USD'}>Colones</option>
           </select>
         </div>
       </div>

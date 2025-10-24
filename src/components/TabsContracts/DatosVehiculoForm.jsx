@@ -80,7 +80,9 @@ const DatosVehiculoForm = ({ formData, setFormData, setIsLoading, data }) => {
           <div className="row">
             <div className="col s12 m6 offset-m6 input-field">
               <i className='material-icons prefix'>price_change</i>
-              <input type="number" name='precio' value={vehicleData?.precio || ''} onChange={(e) => setVehicleData({ ...vehicleData, precio: e.target.value })} />
+              <input type="number" name='precio' value={vehicleData?.precio || ''} onChange={(e) => {
+                setVehicleData({ ...vehicleData, precio: e.target.value})
+              }} />
               <label htmlFor="precio">Precio</label>
             </div>
           </div>

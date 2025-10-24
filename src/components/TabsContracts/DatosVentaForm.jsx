@@ -2,6 +2,46 @@ import React, { useEffect } from 'react';
 import M from 'materialize-css';
 
 const DatosVentaForm = ({ formData, setFormData }) => {
+
+  // Sincroniza PrecioLista y PrecioVenta con el precio del primer vehículo al montar o cuando cambie ListVehiculoxContrato
+  useEffect(() => {
+    let impuestos = 0;
+    if (
+      formData &&
+      Array.isArray(formData.ListVehiculoxContrato) &&
+      formData.ListVehiculoxContrato.length > 0 && formData.ListVehiculoxContrato[0].precio !== 0
+    ) {
+      const precioVehiculo = Number(formData.ListVehiculoxContrato[0].precio);
+      if (
+        (formData.PrecioLista !== precioVehiculo || formData.PrecioVenta !== precioVehiculo) &&
+        !isNaN(precioVehiculo)
+      ) {
+         impuestos = formData.ListVehiculoxContrato[0].Combustible === 'ELECTRICO' ? precioVehiculo * 0.03 : precioVehiculo * 0.13;
+        setFormData((prevData) => ({
+          ...prevData,
+          PrecioLista: precioVehiculo,
+          PrecioVenta: precioVehiculo,
+          Impuestos: impuestos, // Ejemplo: 15% de impuestos
+        }));
+      }
+    }else if(formData &&
+      Array.isArray(formData.ListVehiculoUsadoxContrato) &&
+      formData.ListVehiculoUsadoxContrato.length > 0 && formData.ListVehiculoUsadoxContrato[0].precio !== 0){
+      const precioVehiculo = Number(formData.ListVehiculoUsadoxContrato[0].precio);
+      if (
+        (formData.PrecioLista !== precioVehiculo || formData.PrecioVenta !== precioVehiculo) &&
+        !isNaN(precioVehiculo)
+      ) {
+
+        setFormData((prevData) => ({
+          ...prevData,
+          PrecioLista: precioVehiculo,
+          PrecioVenta: precioVehiculo,
+          Impuestos: 0, // Ejemplo: 15% de impuestos
+        }));
+      }
+    }
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -23,11 +63,11 @@ const DatosVentaForm = ({ formData, setFormData }) => {
             <div className="card-content">
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="PrecioLista" id="PrecioLista" value={formData.PrecioLista} onChange={handleChange} />
+                  <input type="number" name="PrecioLista" id="PrecioLista" value={formData.PrecioLista} disabled />
                   <label htmlFor="PrecioLista">Precios de lista</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="PrecioVenta" id="PrecioVenta" value={formData.PrecioVenta} onChange={handleChange} />
+                  <input type="number" name="PrecioVenta" id="PrecioVenta" value={formData.PrecioVenta} disabled />
                   <label htmlFor="PrecioVenta">Precio de Venta</label>
                 </div>
               </div>
@@ -64,7 +104,7 @@ const DatosVentaForm = ({ formData, setFormData }) => {
                   <label htmlFor="TotAntImpuesto">Subtotal</label>
                 </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="Impuestos" id="Impuestos" value={formData.Impuestos} onChange={handleChange} />
+                  <input type="number" name="Impuestos" id="Impuestos" value={formData.Impuestos} disabled/>
                   <label htmlFor="Impuestos">Impuestos</label>
                 </div>
               </div>

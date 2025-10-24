@@ -36,7 +36,6 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
   useEffect(() => {
     if (isModalOpen && dataSearch && dataSearch.length >= 3) {
       setSearchTerm(dataSearch);
-      console.log('dataSearch:', dataSearch);
       handleSearch();
     }
   }, [isModalOpen]);

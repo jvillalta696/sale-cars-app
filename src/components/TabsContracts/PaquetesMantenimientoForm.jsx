@@ -22,7 +22,6 @@ const PaquetesMantenimientoForm = ({ formData, setFormData }) => {
   };
 
   const handleSelectItem = (item) => {
-    console.log('Item seleccionado:', item);
     setFormData((prevData) => ({
       ...prevData,
       ListaGatoAdicional: [

@@ -83,7 +83,7 @@ export const contratoModel: ContratoModel = {
     Fecha: "",
     CodCliVehiculo: "",
     NombCliVehiculo: "",
-    Moneda: "COL",
+    Moneda: "USD",
     NomTitular: "",
     CodTitular: "",
     CodVendedor: "",

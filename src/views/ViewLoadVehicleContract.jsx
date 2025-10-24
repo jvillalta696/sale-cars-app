@@ -63,7 +63,6 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   const handleSelectContract = async (contract) => {
     try {
       const contractData = await getContratoById(apiConfig, currentCompany.code, contract.DocNum);
-      console.log('Contrato seleccionado:', contractData);
       setFormData(contractData);
     } catch (error) {
       console.error('Error loading contract:', error);
@@ -72,7 +71,6 @@ const ViewLoadVehicleContract = ({ setCurrentView }) => {
   };
   useEffect(() => {
     if(formData.Fecha === ''){
-      console.log('Fecha:',currentDate);
       setFormData((prevData) => ({
         ...prevData,
         Fecha: currentDate,
