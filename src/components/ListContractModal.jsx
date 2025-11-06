@@ -15,6 +15,7 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
         contract.DocNum.toString().includes(searchTerm)
       );
       setFilteredContracts(filtered);
+      
     } else {
       setFilteredContracts([]);
     }
@@ -31,6 +32,7 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
   useEffect(() => {
     M.updateTextFields();
     handleSearch();
+     document.documentElement.style.overflow = '';
   }, []);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
           </div>
           <div className="col s2">
               <button className="modal-close btn"
-                onClick={() => { setSearchTerm(''); setFilteredContracts([]); }}>
+                onClick={() => { setSearchTerm(''); setFilteredContracts([]);  document.documentElement.style.overflow = '';}}>
                 Cerrar
               </button>
             </div>
@@ -88,7 +90,8 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
                     onClick={() => {
                       onSelectContract(contract);
                       setSearchTerm('');
-                      setFilteredContracts([]);                      
+                      setFilteredContracts([]);  
+                       document.documentElement.style.overflow = '';                    
                     }}
                   >
                     Seleccionar
@@ -100,7 +103,7 @@ const ListContractModal = ({isModalOpen,onSelectContract, dataSearch }) => {
         </table>
       </div>
       <div className="modal-footer">
-        <button className="modal-close btn" onClick={() => { setSearchTerm(''); setFilteredContracts([]); }}>
+        <button className="modal-close btn" onClick={() => { setSearchTerm(''); setFilteredContracts([]); document.documentElement.style.overflow = ''; }}>
           Cerrar
         </button>
       </div>

@@ -7,6 +7,16 @@ const VehiculoForm = ({ data }) => {
     M.updateTextFields();
   }, []);
 
+  const formatDate = (d) => {
+    if (!d) return '';
+    if (typeof d === 'string') return d.split('T')[0];
+    try {
+      return new Date(d).toLocaleDateString();
+    } catch {
+      return String(d);
+    }
+  };
+
   return (
     <div>
       <div className="card">
@@ -58,11 +68,24 @@ const VehiculoForm = ({ data }) => {
           <div className="row">
             <div className="col s12 m4">
               <label>Estado de Venta: </label>
-              <span>{data.EstadoVenta}</span>
+              <span>{
+                (() => {
+                  switch (data.EstdVenta) {
+                    case 1:
+                      return 'Disponible';
+                    case 2:
+                      return 'Reservado';
+                    case 3:
+                      return 'Facturado';
+                    default:
+                      return 'Desconocido';
+                  }
+                })()
+              }</span>  
             </div>
             <div className="col s12 m4">
               <label>Fecha Reserva: </label>
-              <span>{data.FechaReserva}</span>
+              <span>{data.FchReserv}</span>
             </div>
             <div className="col s12 m4">
               <label>Vendedor: </label>
@@ -72,7 +95,7 @@ const VehiculoForm = ({ data }) => {
           <div className="row">
             <div className="col s12 m4">
               <label>Fecha Arribo: </label>
-              <span>{data.FechaArribo}</span>
+              <span>{formatDate(data.FchArribo)}</span>
             </div>
             <div className="col s12 m4">
               <label>Fecha Ven Reserva: </label>
@@ -86,11 +109,11 @@ const VehiculoForm = ({ data }) => {
           <div className="row">
             <div className="col s12 m4">
               <label htmlFor="EntraAlmFiscal">Entrada Alm. Fiscal.</label>
-              <span>{data.EntraAlmFiscal}</span>
+              <span>{data.EntradAlmcFis}</span>
             </div>
             <div className="col s12 m4">
               <label htmlFor="SalidaAlmFiscal">Salida Alm. Fiscal.</label>
-              <span>{data.SalidaAlmFiscal}</span>
+              <span>{data.SalidaAlmcFis}</span>
             </div>
           </div>
         </div>

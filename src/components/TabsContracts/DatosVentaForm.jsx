@@ -63,10 +63,6 @@ const DatosVentaForm = ({ formData, setFormData }) => {
             <div className="card-content">
               <div className="row">
                 <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="PrecioLista" id="PrecioLista" value={formData.PrecioLista} disabled />
-                  <label htmlFor="PrecioLista">Precios de lista</label>
-                </div>
-                <div className="col s12 m6 l4 offset-l1 input-field">
                   <input type="number" name="PrecioVenta" id="PrecioVenta" value={formData.PrecioVenta} disabled />
                   <label htmlFor="PrecioVenta">Precio de Venta</label>
                 </div>
@@ -80,6 +76,7 @@ const DatosVentaForm = ({ formData, setFormData }) => {
                     value={formData.ListOtrosGastosInscripcion[0]?.Monto || ''} 
                     onChange={(e) => {
                       const { value } = e.target;
+                      setFormData({...formData, Otros: value})
                       setFormData((prevData) => {
                         const updatedList = [...prevData.ListOtrosGastosInscripcion];
                         if (updatedList.length > 0) {
@@ -91,32 +88,26 @@ const DatosVentaForm = ({ formData, setFormData }) => {
                         };
                       });
                     }} />
-                  <label htmlFor="Otros">Otros</label>
-                </div>
-                <div className="col s12  m6 l4 offset-l1 input-field">
-                  <input type="number" name="Descuento" id="Descuento" value={formData.Descuento} onChange={handleChange} />
-                  <label htmlFor="Descuento">Descuento</label>
+                  <label htmlFor="Otros">Gastos inscripcíon</label>
                 </div>
               </div>
               <div className="row">
-                <div className="col s12 m6 l4 offset-l1 input-field">
-                  <input type="number" name="TotAntImpuesto" id="TotAntImpuesto" value={formData.TotAntImpuesto} onChange={handleChange} />
-                  <label htmlFor="TotAntImpuesto">Subtotal</label>
-                </div>
                 <div className="col s12 m6 l4 offset-l1 input-field">
                   <input type="number" name="Impuestos" id="Impuestos" value={formData.Impuestos} disabled/>
                   <label htmlFor="Impuestos">Impuestos</label>
                 </div>
+                 <div className="col s12  m6 l4 offset-l1 input-field">
+                  <input type="number" name="Descuento" id="Descuento" value={formData.Descuento} onChange={handleChange} />
+                  <label htmlFor="Descuento">Descuento</label>
+                </div>
               </div>
               <div className="divider"></div>
-
               <div className="row">
-                <div className="col s12 m6 offset-m6 l4 offset-l6 input-field">
+                <div className="col s12 m6 offset-m1 l4 offset-l1 input-field">
                   <input type="number" name="Total" id="Total" value={formData.Total} onChange={handleChange} />
                   <label htmlFor="Total">TOTAL</label>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
