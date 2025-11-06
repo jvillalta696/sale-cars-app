@@ -16,6 +16,10 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
     }));
   };
 
+  useEffect(() => {
+     document.documentElement.style.overflow = '';
+  }, []);
+
 
   useEffect(() => {
     // Initialize Materialize CSS select and character counter

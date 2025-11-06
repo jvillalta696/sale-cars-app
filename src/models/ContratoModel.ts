@@ -40,7 +40,7 @@ interface GastoAdicional {
 
 export interface ContratoModel {
   DocNum: number | null;
-  U_Estado: number;
+  U_Estado: string | number;
   CodCliFactura: string;
   NombCliFactura: string;
   Tipo: number;
@@ -75,7 +75,7 @@ export interface ContratoModel {
 
 export const contratoModel: ContratoModel = {
     DocNum: null,
-    U_Estado: 1,
+    U_Estado: "1",
     CodCliFactura: "",
     NombCliFactura: "",
     Tipo: 1,
