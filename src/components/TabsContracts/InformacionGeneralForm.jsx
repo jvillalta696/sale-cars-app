@@ -126,7 +126,7 @@ const InformacionGeneralForm = ({ formData, setFormData, setCurrentView }) => {
         </div>
         <div className="col s12 m4 input-field">
           <i className='material-icons prefix'>{getStatusIcon(formData.U_Estado)}</i>
-          <select name='U_Estado' id='U_Estado' value={formData.U_Estado} onChange={handleChange}>
+          <select name='U_Estado' id='U_Estado' value={formData.U_Estado} disabled>
             <option value="0">Cancelado</option>
             <option value="1">Trámite</option>
             <option value="2">Pend. Fact</option>
